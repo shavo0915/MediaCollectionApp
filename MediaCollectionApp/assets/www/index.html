@@ -1,42 +1,74 @@
-<!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Media Collection App</title> 
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="jquery.mobile-1.2.0/jquery.mobile-1.2.0.css" />
+	<script src="jQuery/jquery-1.8.2.js"></script>
+	<script src="jquery.mobile-1.2.0/jquery.mobile-1.2.0.js"></script>
+</head> 
+<body> 
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	<div data-role="page" id="myMedia">
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-        </div>
-        <script type="text/javascript" src="cordova-2.2.0.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-    </body>
+		<div data-role="header">
+			<a href="" data-role="button">Settings</a>
+			<h1>My Media</h1>
+		</div><!-- /header -->
+		
+		<ul data-role="listview">
+			<li>
+				<a href="">
+					<!--<img src="img\Queen.jpg">-->
+					<h3>Music</h3>
+					<p>Queen</p>
+					<span class="ui-li-count">33</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<!--<img src="img\Hobbit_cover.jpg">-->
+					<h3>Books</h3>
+					<p>The Hobbit</p>
+					<span class="ui-li-count">103</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<!--<img src="img\BlackOps2.png">-->
+					<h3>Games</h3>
+					<p>Call of Duty: Black Ops II</p>
+					<span class="ui-li-count">42</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<!--<img src="img\Judge_Dredd.jpg">-->
+					<h3>Movies</h3>
+					<p>Judge Dredd</p>
+					<span class="ui-li-count">78</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<!--<img src="img\NEWGIRL.jpg">-->
+					<h3>TV Shows</h3>
+					<p>New Girl</p>
+					<span class="ui-li-count">121</span>
+				</a>
+			</li>			
+			
+			<!--<div data-role="footer" data-position="fixed">
+				<a href="" data-role="button" data-theme="a" data-inline="false">Settings</a>
+			</div>-->
+		
+		</ul>
+
+	</div><!-- /page -->
+	
+	<div data-role="page" id="games">
+		
+	</div>
+
+</body>
 </html>
