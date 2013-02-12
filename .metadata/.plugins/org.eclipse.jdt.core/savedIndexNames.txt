@@ -1,4 +1,3 @@
 INDEX VERSION 1.126+C:\Users\bravos\Documents\GitHub\MediaCollectionApp\.metadata\.plugins\org.eclipse.jdt.core
 661939445.index
-405364581.index
 1603389705.index

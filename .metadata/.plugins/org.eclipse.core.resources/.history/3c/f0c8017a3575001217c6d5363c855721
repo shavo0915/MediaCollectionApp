@@ -1,0 +1,212 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Media Collection App</title> 
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="jquery.mobile-1.2.0/jquery.mobile-1.2.0.css" />
+	<script src="jQuery/jquery-1.8.2.js"></script>
+	<script src="jquery.mobile-1.2.0/jquery.mobile-1.2.0.js"></script>
+</head> 
+<body> 
+
+	<div data-role="page" id="myMedia">
+
+		<div data-role="header">
+			<a href="#settings" data-role="button">Settings</a>
+			<h1>My Media</h1>
+		</div><!-- /header -->
+		
+		<div data-role="content">
+			<ul data-role="listview">
+				<li>
+					<a href="#myMusic">
+						<h3>Music</h3>
+						<span class="ui-li-count">33</span>
+					</a>
+				</li>
+				<li>
+					<a href="#myBooks">
+						<h3>Books</h3>
+						<span class="ui-li-count">103</span>
+					</a>
+				</li>
+				<li>
+					<a href="#myGames">
+						<h3>Games</h3>
+						<span class="ui-li-count">42</span>
+					</a>
+				</li>
+				<li>
+					<a href="#myMovies">
+						<h3>Movies</h3>
+						<span class="ui-li-count">78</span>
+					</a>
+				</li>
+				<li>
+					<a href="#myShows">
+						<h3>TV Shows</h3>
+						<span class="ui-li-count">121</span>
+					</a>
+				</li>					
+			</ul>
+		</div>
+
+	</div><!-- /page -->
+	
+	<div data-role="page" id="myMusic">
+		
+		<div data-role="header">
+			<a data-role="button" href="#addMedia">Add Music</a>
+			<h1>My Music</h1>
+		</div><!-- /header-->
+		
+		<div data-role="content">
+			<ul data-role="listview" data-filter="true" data-filter-placeholder="Search Stored Music...">
+				<li>
+					<a href="">
+						<img src="img\Queen.jpg" />
+						<h3>Queen</h3>
+						<p>Greatest Hits I II & III</p>
+					</a>
+				</li>			
+			</ul>
+		</div><!-- /content-->
+		
+	</div><!-- /page-->
+	
+	<div data-role="page" id="myBooks">
+		
+		<div data-role="header">
+			<a data-role="button" href="#addMedia">Add Books</a>
+			<h1>My Books</h1>
+		</div><!-- /header-->
+		
+		<div data-role="content">
+			<ul data-role="listview" data-filter="true" data-filter-placeholder="Search Stored Books...">
+				<li>
+					<a href="">
+						<img src="img\Hobbit_cover.jpg" />
+						<h3>The Hobbit</h3>
+						<p>J. R. R. Tolkien</p>
+					</a>
+				</li>			
+			</ul>
+		</div><!-- /content-->
+		
+	</div><!-- /page-->
+	
+	<div data-role="page" id="myGames">
+		<div data-role="header">
+			<a data-role="button" href="#addMedia">Add Games</a>
+			<h1>My Games</h1>
+		</div><!-- /header-->
+		
+		<div data-role="content">
+			<ul data-role="listview" data-filter="true" data-filter-placeholder="Search Stored Games...">
+				<li>
+					<a href="">
+						<img src="img/BlackOps2.png"/>
+						<h3>Call of Duty: Black Ops II</h3>
+						<p>Activision</p>
+					</a>					
+				</li>				
+			</ul>
+			
+		</div><!-- /content-->
+		
+	</div><!-- page-->
+	
+	<div data-role="page" id="myMovies">
+		<div data-role="header">
+			<a data-role="button" href="#addMedia">Add Movies</a>
+			<h1>My Movies</h1>
+		</div>
+		
+		<div data-role="content">
+			<ul data-role="listview" data-filter="true" data-filter-placeholder="Search Stored Movies...">
+				<li>
+					<a href="">
+						<img src="img/Judge_Dredd.jpg"/>
+						<h3>Judge Dredd</h3>
+						<p>1995</p>
+					</a>
+				</li>
+			</ul>
+		</div><!-- /content-->
+		
+	</div><!-- /page-->
+	
+	<div data-role="page" id="myShows">
+		
+		<div data-role="header">
+			<a data-role="button" href="#addMedia">Add TV Shows</a>
+			<h1>My TV Shows</h1>
+		</div>
+		
+		<div data-role="content">
+			<ul data-role="listview" data-filter="true" data-filter-placeholder="Search Stored TV Shows..">
+				<li>
+					<a href="">
+						<img src="img/NEWGIRL.jpg"/>
+						<h3>The New Girl</h3>
+						<p>2011</p>						
+					</a>
+				</li>
+				
+			</ul>
+		</div><!-- /content-->
+		
+	</div><!-- /page-->
+	
+	<div data-role="page" id="addMedia">
+		
+		<div data-role="header" data-position="inline">			
+			<h1>Add Media</h1>
+		</div>
+		
+		<div data-role="content">
+			
+			<div data-role="fieldcontain">
+				<label for="select-choice-1" class="select">Choose Your Media:</label>
+				<select name="select-choice-1" id="select-choice-1">
+   					<option value="music">Music</option>
+   					<option value="books">Books</option>
+   					<option value="games">Games</option>
+   					<option value="movies">Movies</option>
+   					<option value="shows">TV Shows</option>
+				</select>
+			</div>
+			
+			<div data-role="fieldcontain">
+				<label for="mediaSearch">Search Input:</label>
+				<input type="search" name="search" id="mediaSearch" value="Enter Your Query Here...">
+			</div>
+			
+			<input type="submit" value="Submit Button" />
+			
+		</div><!-- /content-->
+		
+	</div><!-- /page-->
+	
+	<div data-role="page" id="settings">
+		
+		<div data-role="header">
+			<h1>Settings</h1>
+		</div>
+		
+		<div data-role="content">
+			<div data-role="fieldcontain">
+				<label for="email">E-mail:</label>
+				<input type="email" name="email" id="email"/>
+			</div>
+			
+			<div data-role="fieldcontain">
+				<label for="password">Password:</label>
+				<input type="password" name="password" id="password"/>
+			</div>
+		</div>
+		
+	</div>
+	
+</body>
+</html>
