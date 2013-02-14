@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="jquery.mobile-1.2.0/jquery.mobile-1.2.0.css" />
 	<script src="jQuery/jquery-1.8.2.js"></script>
 	<script src="jquery.mobile-1.2.0/jquery.mobile-1.2.0.js"></script>
+	<script src="js/mediaQuery.js"></script>
 </head> 
 <body> 
 
@@ -169,7 +170,7 @@
 			
 			<div data-role="fieldcontain">
 				<label for="select-choice-1" class="select">Choose Your Media:</label>
-				<select name="select-choice-1" id="select-choice-1">
+				<select id="mediaChoice">
    					<option value="music">Music</option>
    					<option value="books">Books</option>
    					<option value="games">Games</option>
@@ -180,10 +181,10 @@
 			
 			<div data-role="fieldcontain">
 				<label for="mediaSearch">Search Input:</label>
-				<input type="search" name="search" id="mediaSearch" value="Enter Your Query Here...">
+				<input type="search" id="mediaSearch" value="Enter Your Query Here...">
 			</div>
 			
-			<input type="submit" value="Submit" />
+			<input type="submit" value="Submit" onclick="queryMedia()"/>
 			
 		</div><!-- /content-->
 		
