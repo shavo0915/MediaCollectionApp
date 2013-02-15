@@ -1,9 +1,10 @@
 //Function used to call queries depending on what media the user selected.
 function queryMedia(){
 	var chosenMedia = getSelectedMediaValue();
+	var queryString = getQueryString();
 	
 	if(chosenMedia == "games"){
-		var queryString = getQueryString();
+		
 		alert(queryString);
 	}
 	else if(chosenMedia =="music"){
@@ -16,7 +17,8 @@ function queryMedia(){
 		alert("You have chosen Books");
 	}
 	else if(chosenMedia == "movies"){
-		alert("You have chosen Movies");
+		getMovieInfo(queryString);
+		//alert("You have chosen Movies");
 	}
 }
 
