@@ -8,7 +8,6 @@
 	<script src="jquery.mobile-1.2.0/jquery.mobile-1.2.0.js"></script>
 	<script src="js/mediaQuery.js"></script>
 	<script src="js/movieDbRequest.js"></script>
-	<script src="js/gameDbRequest.js"></script>
 </head> 
 <body> 
 
@@ -188,11 +187,11 @@
 			
 			<input type="submit" value="Submit" onclick="queryMedia()"/>
 			
-			<div data-role="popup" id="mediaQueryReturn" data-overlay-theme="a" data-theme="a" class="ui-content">
-				<ul data-role="listview" id="mediaReturn" style="width:180px">
-					
-				</ul>
-			</div>			
+			<div data-role="popup" id="mediaQueryReturn" data-overlay-theme="a" data-theme="a" >
+					<ul data-role="listview" id="mediaReturn" data-inset="true" style="min-width:210px;" class="">
+						
+					</ul>
+			</div>
 			
 		</div><!-- /content-->
 		
