@@ -1,3 +1,5 @@
+var games;
+
 function getGameInfo(gameName){
 	$.ajax({
 		url: " http://thegamesdb.net/api/GetGamesList.php",
@@ -13,14 +15,41 @@ function getGameInfo(gameName){
 		    console.log("Error: Service Unavailable"); 
 		 },
 		complete: function(){
-			alert("Complete")
+			alert("Complete");
 			console.log("getGameInfo Done");
 			  }
 	});
 }
 
 function getGameInfoSuccess(data){
-	alert("Success");
-	console.log("Retrieved Game Info Successfully \n")
-	console.log(data);
+	clearList();
+	alert("Retrieved game info!")
+	//console.log("Retrieved Game Info Successfully \n")
+	//console.log(data);
+	alert(data.valueOf("GameTitle"));
+	//alert(data.GameTitle);
+	//console.log(data.GameTitle);
+	
+	games = data;
+	for(var x in data.results){
+		var listElement = "<li onclick='mediaSelect()'>" + data.GameTitle + "</li>";
+		$('#mediaReturn').append(listElement);
+	}
+	
+	$('#mediaQueryReturn').popup('open');
 }
+
+/*function queryFormat(query){
+	query = query.replace(/ /g, "+");
+	console.log(query);
+	return query;
+}
+
+function mediaSelect(){
+	console.log();
+	$('#mediaQueryReturn').popup('close');
+}
+
+function clearList(){
+	$('#mediaReturn').empty();
+}*/
