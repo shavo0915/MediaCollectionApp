@@ -33,16 +33,36 @@ function getMovieInfo(title){
 
 function getMovieInfoSuccess(data){
 	clearList();
+	//Checks to see if the query returned no results, if so, displays popup indicating no matches were found and exit function
+	if(data.results.length == 0){
+		var listElement = "<li style='font-size:18px' >No Matches found!!</li>";
+		$('#mediaReturn').append(listElement);
+		$('#mediaReturn').listview( "refresh" );
+		$('#mediaQueryReturn').popup('open');
+		return;
+	}
 	console.log("Retrieved Movie Info Successfully \n")
 	console.log(data);
-	console.log(data.results[0].title);
+	//console.log(data.results[0].title);
 	
 	movies = data;
 	for(var x in data.results){
-		var listElement = "<li onclick='mediaSelect()'>" + data.results[x].title + "</li>";
+		var listElement = "<li style='font-size:18px' ><a href='#'>" + data.results[x].title;
+		var elementEnd;
+		if(data.results[x].release_date == null){
+			elementEnd = "</a></li>";
+			listElement = listElement.concat(elementEnd);
+		}else{
+			elementEnd = " (" + data.results[x].release_date.substr(0,4) + ")</a></li>";
+			listElement = listElement.concat(elementEnd);
+		}
 		$('#mediaReturn').append(listElement);
 	}
 	
+	$('#mediaReturn li').click(function() {
+		mediaSelect($(this).index());
+	})
+	$( '#mediaReturn' ).listview( "refresh" );
 	$('#mediaQueryReturn').popup('open');
 }
 
@@ -52,8 +72,10 @@ function queryFormat(query){
 	return query;
 }
 
-function mediaSelect(){
-	console.log();
+function mediaSelect(index){
+	//var index = $("#mediaReturn li").index(this);
+	console.log(index);
+	console.log(movies.results[index]);
 	$('#mediaQueryReturn').popup('close');
 }
 
