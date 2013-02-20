@@ -62,7 +62,7 @@ function getMovieInfoSuccess(data){
 	$('#mediaReturn li').click(function() {
 		mediaSelect($(this).index());
 	})
-	$( '#mediaReturn' ).listview( "refresh" );
+	$('#mediaReturn' ).listview( "refresh" );
 	$('#mediaQueryReturn').popup('open');
 }
 
