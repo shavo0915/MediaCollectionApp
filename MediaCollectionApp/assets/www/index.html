@@ -127,14 +127,8 @@
 		</div>
 		
 		<div data-role="content">
-			<ul data-role="listview" data-filter="true" data-filter-placeholder="Search Stored Movies...">
-				<li>
-					<a href="">
-						<img src="img/Judge_Dredd.jpg"/>
-						<h3>Judge Dredd</h3>
-						<p>1995</p>
-					</a>
-				</li>
+			<ul data-role="listview" id="movieList" data-filter="true" data-autodividers="true" data-filter-placeholder="Search Stored Movies...">
+				
 			</ul>
 		</div><!-- /content-->
 		
@@ -250,4 +244,7 @@
 	</div>
 	
 </body>
+<script type="text/javascript">
+		$( '#addMedia' ).on( "pagecreate", function( event, ui ) {getTMDbConfig()} );
+	</script>
 </html>
