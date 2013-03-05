@@ -4,6 +4,8 @@ var movies;
 var baseAddress;
 var posterSize;
 var myMovies = [];
+var movieIndex;
+
 
 /**
  * This function is run when the addMedia page is created and is used to get the base address for the movie posters and the poster sizes
@@ -35,7 +37,7 @@ function getMovieInfo(title){
 	$.ajax({
 		url: "http://api.themoviedb.org/3/search/movie",
 		dataType: "json",
-		data: {api_key: api_key , query: query},
+		data: {api_key: api_key, query: query, include_adult: false},
 		success: getMovieInfoSuccess,
 		error: errorAlert,
 		complete: function(){
@@ -112,8 +114,6 @@ function movieSelect(index){
 		}			
 	}
 	
-	$('#movieList').empty();
-	
 	//adds the selected movie object to the array of movies representing the user's movie collection and then sorts them alphabetically
 	myMovies.push(selection);
 	myMovies.sort(function (a, b){
@@ -125,23 +125,7 @@ function movieSelect(index){
 		return 0;
 	});
 	
-	//Checks if the release date is null and then assembles the appropriate html elements to add to the listview; the movieList 
-	//listview is always cleared and re-populated when a new movie is added
-	for(var x in myMovies){
-		var posterPath = myMovies[x].poster_path;
-		var movieItem = "<li><a href=''><img src=" + baseAddress + posterSize + posterPath + "/><h3>" + myMovies[x].title + "</h3>";
-		var elementEnd;
-		if(myMovies[x].release_date == null){
-			elementEnd = "<p></p></a></li>";
-			movieItem = movieItem.concat(elementEnd);
-		}else{
-			elementEnd = "<p>" + myMovies[x].release_date.substr(0,4) + "</p></a></li>";
-			movieItem = movieItem.concat(elementEnd);
-		}
-		$('#movieList').append(movieItem);
-	}	
-	
-	$('#movieList').listview("refresh");
+	buildMovieList();
 	
 	//the popup is closed and the addMedia confirm popup is opened after giving the mediaQueryReturn popop time to close (neccessary for
 	//new popup to appear
@@ -182,4 +166,51 @@ function errorAlert(status){
     $('#mediaReturn').append(listElement);
     $('#mediaReturn').listview( "refresh" );
     $('#mediaQueryReturn').popup('open');
+}
+
+function openMovieDialog(index){
+	console.log(index);
+	movieIndex = index;
+	$('#movieOptionsLink').click();
+}
+
+function deleteMovie(){
+	myMovies.splice(movieIndex, 1);
+	buildMovieList();
+	$('#movieOptions').dialog('close');
+}
+
+/**
+ * Checks if the release date is null and then assembles the appropriate html elements to add to the listview; the movieList 
+ *	listview is always cleared and re-populated when a new movie is added
+ */
+function buildMovieList(){
+	
+	$('#movieList').empty();
+	
+	for(var x in myMovies){
+		var posterPath = myMovies[x].poster_path;
+		var movieItem = "<li data-myMoviesIndex = " + x + "><a href=''><img src=" + baseAddress + posterSize + posterPath + "/><h3>" + myMovies[x].title + "</h3>";
+		var elementEnd;
+		if(myMovies[x].release_date == null){
+			elementEnd = "<p></p></a></li>";
+			movieItem = movieItem.concat(elementEnd);
+		}else{
+			elementEnd = "<p>" + myMovies[x].release_date.substr(0,4) + "</p></a></li>";
+			movieItem = movieItem.concat(elementEnd);
+		}
+		$('#movieList').append(movieItem);
+	};
+	
+	/*$('#movieList li').on('taphold',function(event, ui){ 
+	openMovieDialog($(this).index());
+	}); */
+
+	$('#movieList li').click(function() {
+		openMovieDialog($(this).attr('data-myMoviesIndex'));
+	});
+
+	$('#movieList').listview("refresh");
+
+	$('#movieCount').text(myMovies.length);
 }
