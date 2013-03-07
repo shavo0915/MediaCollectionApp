@@ -125,6 +125,8 @@ function movieSelect(index){
 		return 0;
 	});
 	
+	localStorage.movieList = JSON.stringify(myMovies);
+	
 	buildMovieList();
 	
 	//the popup is closed and the addMedia confirm popup is opened after giving the mediaQueryReturn popop time to close (neccessary for
@@ -152,6 +154,8 @@ function getMovieConfigSuccess(data){
 	
 	baseAddress = data.images.base_url;
 	posterSize = data.images.poster_sizes[0];
+	localStorage.baseAddress = baseAddress;
+	localStorage.posterSize = posterSize;
 }
 
 /**
@@ -176,6 +180,7 @@ function openMovieDialog(index){
 
 function deleteMovie(){
 	myMovies.splice(movieIndex, 1);
+	localStorage.movieList = JSON.stringify(myMovies);
 	buildMovieList();
 	$('#movieOptions').dialog('close');
 }
