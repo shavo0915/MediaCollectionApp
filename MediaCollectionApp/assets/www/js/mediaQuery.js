@@ -4,7 +4,7 @@ function queryMedia(){
 	var queryString = getQueryString();
 	
 	if(chosenMedia == "games"){
-		getGameInfo(queryString);
+		getGameListInfo(queryString);
 		//alert(queryString);
 	}
 	else if(chosenMedia =="music"){
