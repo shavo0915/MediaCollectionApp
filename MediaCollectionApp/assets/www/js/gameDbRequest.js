@@ -103,7 +103,9 @@ function displayGameDetails(){
 	//Clear game content to account for multiple uses 
 	$("#mediaInfoContent").empty();
 	var gameTitle = $(gameData).find("GameTitle").text();
-	var gameDetails = "<img src='" + $(gameData).find("thumb").eq(0).text() + "'/>" + "<p><b>Platform: </b>" + $(gameData).find("Platform").text() + "</p><p>" + "<b>Release Date: </b>" + $(gameData).find("ReleaseDate").text() + "</p>"
+	var imageURL = $(gameData).find("baseImgUrl").text() + $(gameData).find("boxart[side='front']").attr("thumb");
+	console.log("IMG Source: " + imageURL);
+	var gameDetails = "<img class='image-scaling' src='" + imageURL + "'/>" + "<p><b>Platform: </b>" + $(gameData).find("Platform").text() + "</p><p>" + "<b>Release Date: </b>" + $(gameData).find("ReleaseDate").text() + "</p>"
 	+ "<p><b>Publisher: </b>" + $(gameData).find("Publisher").text() + "<p><b>Developer: </b>" + $(gameData).find("Developer").text() + "</p><p><b>Overview: </b><br>" + $(gameData).find("Overview").text() + "</p>";
 	$('#mediaTitle').append(gameTitle);
 	$('#mediaInfoContent').append(gameDetails);
