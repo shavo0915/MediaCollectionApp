@@ -3,9 +3,10 @@ var api_key = "af362a39277d00a53820b15e7d9137f0";
 var movies;
 var baseAddress;
 var posterSize;
+var selImageURL;
 var myMovies = [];
 var movieIndex;
-
+var movieData;
 
 /**
  * This function is run when the addMedia page is created and is used to get the base address for the movie posters and the poster sizes
@@ -21,10 +22,7 @@ function getTMDbConfig(){
 		error: errorAlert,
 		complete: function(){
 			console.log("getTMDbConfig done");
-		},
-		complete: function(){
-			  console.log("getMovieConfig Done");
-		  }
+			}
 	});
 }
 
@@ -41,7 +39,7 @@ function getMovieInfo(title){
 		success: getMovieInfoSuccess,
 		error: errorAlert,
 		complete: function(){
-				  console.log("getMovieInfo Done");
+				console.log("getMovieInfo Done");
 			  }
 	});
 }
@@ -64,13 +62,13 @@ function getMovieInfoSuccess(data){
 	
 	movies = data;
 	for(var x in data.results){
-		var listElement = "<li style='font-size:18px' ><a href='#'>" + data.results[x].title;
+		var listElement = "<li><a href='#'><h1>" + data.results[x].title + "</h1>";
 		var elementEnd;
 		if(data.results[x].release_date == null){
 			elementEnd = "</a></li>";
 			listElement = listElement.concat(elementEnd);
 		}else{
-			elementEnd = " (" + data.results[x].release_date.substr(0,4) + ")</a></li>";
+			elementEnd = "<p> (" + data.results[x].release_date.substr(0,4) + ")</p></a></li>";
 			listElement = listElement.concat(elementEnd);
 		}
 		$('#mediaReturn').append(listElement);
@@ -105,34 +103,23 @@ function queryFormat(query){
 function movieSelect(index){		
 	var selection = movies.results[index];
 	
-	//this checks if the selected movie already exists in the user's collection
-	for(var i = 0; i < myMovies.length; i++){
-		if(myMovies[i].title == selection.title){
-			$('#mediaQueryReturn').popup('close');
-			setTimeout( function(){ $( '#addExistingMedia' ).popup( 'open' ) }, 100 );
-			return;
-		}			
-	}
+	//Clear dialogs header first just in case we had already appended a title
+	$("#mediaType").empty();
+	var mediaPopup = "Add Movies"
+	$('#mediaType').append(mediaPopup);
 	
-	//adds the selected movie object to the array of movies representing the user's movie collection and then sorts them alphabetically
-	myMovies.push(selection);
-	myMovies.sort(function (a, b){
-		var titleA = a.title.toLowerCase(), titleB = b.title.toLowerCase();
-		if (titleA < titleB)
-			return -1;
-		if (titleA > titleB)
-			return 1;
-		return 0;
-	});
 	
-	localStorage.movieList = JSON.stringify(myMovies);
+	$('#addMediaButton').attr('onclick', "addMovie()");
+	$('#displayInfoButton').attr('onclick', "displayMovieDetails()");
 	
-	buildMovieList();
+	//Manually change the page to the dialog with 2 buttons. Either add to collection or view more info.
+	$.mobile.changePage('#addToCollection', {transition: 'pop', role: 'dialog'});
 	
-	//the popup is closed and the addMedia confirm popup is opened after giving the mediaQueryReturn popop time to close (neccessary for
-	//new popup to appear
 	$('#mediaQueryReturn').popup('close');
-	setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'open' ) }, 100 );
+	
+	getMovieDetail(selection.id)
+	
+
 }
 
 /**
@@ -180,7 +167,11 @@ function openMovieDialog(index){
 
 function deleteMovie(){
 	myMovies.splice(movieIndex, 1);
-	localStorage.movieList = JSON.stringify(myMovies);
+	if(myMovies.length == 0){
+		localStorage.removeItem("movieList");
+	}else{
+		localStorage.movieList = JSON.stringify(myMovies);
+	}
 	buildMovieList();
 	$('#movieOptions').dialog('close');
 }
@@ -218,4 +209,97 @@ function buildMovieList(){
 	$('#movieList').listview("refresh");
 
 	$('#movieCount').text(myMovies.length);
+}
+
+function getMovieDetail(movieID){
+	var detailURL = "http://api.themoviedb.org/3/movie/" + movieID
+	
+	$.ajax({
+		url: detailURL,
+		dataType: "json",
+		data: {api_key: api_key},
+		async: false,
+		success: getMovieDetailSuccess,
+		error: errorAlert,
+		complete: function(){
+			console.log("getTMDbConfig done");
+		}
+	});
+}
+
+function getMovieDetailSuccess(data){
+	movieData = data;	
+	selImageURL = baseAddress + posterSize + movieData.poster_path;
+}
+
+function addMovie(){
+	//this checks if the selected movie already exists in the user's collection
+	for(var i = 0; i < myMovies.length; i++){
+		if(myMovies[i].id == movieData.id){
+	//		$('#addToCollection').dialog('close');
+			$('#addExistingMedia').bind({
+				popupafterclose: function(event, ui){
+					$('#addToCollection').dialog('close');
+				}
+			})
+			setTimeout( function(){ $( '#addExistingMedia' ).popup( 'open' ) }, 100 );
+			return;
+		}			
+	}
+	
+	//adds the selected movie object to the array of movies representing the user's movie collection and then sorts them alphabetically
+	myMovies.push(movieData);
+	myMovies.sort(function (a, b){
+		var titleA = a.title.toLowerCase(), titleB = b.title.toLowerCase();
+		if (titleA < titleB)
+			return -1;
+		if (titleA > titleB)
+			return 1;
+		return 0;
+	});
+	
+	localStorage.movieList = JSON.stringify(myMovies);
+	
+	buildMovieList();
+	
+	//the popup is closed and the addMedia confirm popup is opened after giving the mediaQueryReturn popop time to close (neccessary for
+	//new popup to appear
+//	$('#addToCollection').dialog('close');
+	
+	setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'open' ) }, 100 );
+	$('#addMediaConfirm').bind({
+		popupafterclose: function(event, ui){
+			$('#addToCollection').dialog('close');
+		}
+	})
+}
+
+function displayMovieDetails(){
+	//clear header Title to account for multiple uses 
+	$("#mediaTitle").empty();
+	//Clear game content to account for multiple uses 
+	$("#mediaInfoContent").empty();
+	var movieTitle = movieData.title;
+	var imageURL = selImageURL;
+	var movieDetails = "<center><img src='" + imageURL + "' alt='" + movieTitle + "'/></center>" + "<b>Release Date: </b>" + movieData.release_date + "</p>"
+	+ "</p>" + "<p><b>Tagline: </b><br>" + movieData.tagline + "<p><b>Overview: </b><br>" + movieData.overview + "</p>" + "<p><b>Runtime: </b>" + movieData.runtime + 
+		" min</p>";
+	$('#mediaTitle').append(movieTitle);
+	$('#mediaInfoContent').append(movieDetails);
+	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
+}
+
+function displayCollectedMovieDetails(){
+	//clear header Title to account for multiple uses 
+	$("#mediaTitle").empty();
+	//Clear game content to account for multiple uses 
+	$("#mediaInfoContent").empty();
+	var movieTitle = myMovies[movieIndex].title;
+	var imageURL = baseAddress + posterSize + myMovies[movieIndex].poster_path;
+	var movieDetails = "<center><img src='" + imageURL + "' alt='" + movieTitle + "'/></center>" + "<b>Release Date: </b>" + myMovies[movieIndex].release_date + "</p>"
+	+ "</p>" + "<p><b>Tagline: </b><br>" + myMovies[movieIndex].tagline + "<p><b>Overview: </b><br>" + myMovies[movieIndex].overview + "</p>" + "<p><b>Runtime: </b>" + myMovies[movieIndex].runtime + 
+	" min</p>";
+	$('#mediaTitle').append(movieTitle);
+	$('#mediaInfoContent').append(movieDetails);
+	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
 }
