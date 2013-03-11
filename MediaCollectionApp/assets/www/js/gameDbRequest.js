@@ -1,5 +1,7 @@
 var games;
 var gameData;
+var myGames = [];
+
 
 /*Initiates AJAX call. We send a query string which in this case is the game name and depending on whether we establish a 
  * connection with the database we either call the success function or print out an error to the user.
@@ -105,9 +107,13 @@ function displayGameDetails(){
 	var gameTitle = $(gameData).find("GameTitle").text();
 	var imageURL = $(gameData).find("baseImgUrl").text() + $(gameData).find("boxart[side='front']").attr("thumb");
 	console.log("IMG Source: " + imageURL);
-	var gameDetails = "<img class='image-scaling' src='" + imageURL + "'/>" + "<p><b>Platform: </b>" + $(gameData).find("Platform").text() + "</p><p>" + "<b>Release Date: </b>" + $(gameData).find("ReleaseDate").text() + "</p>"
+	var gameDetails = "<center><img src='" + imageURL + "' alt='" + gameTitle + "'/></center>" + "<p><b>Platform: </b>" + $(gameData).find("Platform").text() + "</p><p>" + "<b>Release Date: </b>" + $(gameData).find("ReleaseDate").text() + "</p>"
 	+ "<p><b>Publisher: </b>" + $(gameData).find("Publisher").text() + "<p><b>Developer: </b>" + $(gameData).find("Developer").text() + "</p><p><b>Overview: </b><br>" + $(gameData).find("Overview").text() + "</p>";
 	$('#mediaTitle').append(gameTitle);
 	$('#mediaInfoContent').append(gameDetails);
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
+}
+
+function addGameToCollection(){
+	
 } 
