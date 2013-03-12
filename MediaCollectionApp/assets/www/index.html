@@ -254,7 +254,7 @@
 			<h2>Options</h2>
 		</div>
 		<div data-role="content">
-			<a href="" data-role="button" data-icon="info">Movie Info</a>
+			<a href="" data-role="button" data-icon="info" onclick="displayCollectedMovieDetails()">Movie Info</a>
 			<a href="" data-role="button" data-icon="delete" onclick="deleteMovie()">Delete</a>
 		</div>
 	</div>
@@ -265,8 +265,21 @@
 		</div>
 		
 		<div data-role="content">
+
 			<a data-role="button" data-icon="plus" onclick="addGameToCollection()">Add To Collection</a>
 			<a data-role="button" data-icon="info" onclick="displayGameDetails()">View More Information</a>
+
+			<a data-role="button" id="addMediaButton" data-icon="plus">Add To Collection</a>
+			<a data-role="button"id="displayInfoButton" data-icon="info" onclick="displayGameDetails()">View More Information</a>
+			
+			<div data-role="popup" id="addMediaConfirm" data-overlay-theme="a" >
+				<h3>Media Successfully Added!!</h3>
+			</div>
+			
+			<div data-role="popup" id="addExistingMedia" data-overlay-theme="a" >
+				<h3>Media Already Exists In Collection</h3>
+			</div>
+
 		</div>
 	</div>
 	
