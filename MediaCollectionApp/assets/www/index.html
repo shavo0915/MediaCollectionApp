@@ -38,7 +38,7 @@
 				<li>
 					<a href="#myGames">
 						<h3>Games</h3>
-						<span class="ui-li-count">42</span>
+						<span id="gameCount" class="ui-li-count">0</span>
 					</a>
 				</li>
 				<li>
@@ -107,14 +107,8 @@
 		</div><!-- /header-->
 		
 		<div data-role="content">
-			<ul data-role="listview" data-filter="true" data-filter-placeholder="Search Stored Games...">
-				<li>
-					<a href="">
-						<img src="img/BlackOps2.png"/>
-						<h3>Call of Duty: Black Ops II</h3>
-						<p>Activision</p>
-					</a>					
-				</li>				
+			<ul data-role="listview" id="gameList" data-filter="true" data-autodividers="true" data-filter-placeholder="Search Stored Games...">	
+			
 			</ul>
 			
 		</div><!-- /content-->
@@ -271,8 +265,8 @@
 		</div>
 		
 		<div data-role="content">
-			<a data-role="button">Add To Collection</a>
-			<a data-role="button" onclick="displayGameDetails()">View More Information</a>
+			<a data-role="button" data-icon="plus" onclick="addGameToCollection()">Add To Collection</a>
+			<a data-role="button" data-icon="info" onclick="displayGameDetails()">View More Information</a>
 		</div>
 	</div>
 	

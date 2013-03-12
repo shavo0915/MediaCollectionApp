@@ -115,5 +115,42 @@ function displayGameDetails(){
 }
 
 function addGameToCollection(){
+	myGames.push(gameData);
 	
+	myGames.sort(function (a, b){
+		var titleA = $(a).find("GameTitle").text().toLowerCase(), titleB = $(b).find("GameTitle").text().toLowerCase();
+		if (titleA < titleB)
+			return -1;
+		if (titleA > titleB)
+			return 1;
+		return 0;
+	});
+		
+	//localStorage.gameList = (new XMLSerializer()).serializeToString(myGames);
+	//localStorage.gameList = myGames;
+	
+	buildGameList();
 } 
+
+function buildGameList(){
+	$('#gameList').empty();
+	
+	for(var x in myGames){
+		var posterPath = $(myGames[x]).find("baseImgUrl").text() + $(myGames[x]).find("boxart[side='front']").attr("thumb");
+		var gameItem = "<li data-myGamesIndex = " + x + "><a href=''><img src=" + posterPath + "/><h3>" + $(myGames[x]).find("GameTitle").text() + "</h3>"
+		+ "<p>" + $(myGames[x]).find("ReleaseDate").text() + "</p><p>" + $(myGames[x]).find("Platform").text() + "</p></a></li>";
+		var elementEnd;
+
+		$('#gameList').append(gameItem);
+	};
+
+	$('#gameList li').click(function() {
+		openMovieDialog($(this).attr('data-myGamesIndex'));
+	});
+
+	$('#gameList').listview("refresh");
+
+	$('#gameCount').text(myGames.length);
+	
+	alert("Game added to collection!!");
+}
