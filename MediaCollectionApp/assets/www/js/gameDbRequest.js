@@ -1,6 +1,7 @@
 var games;
 var gameData;
 var myGames = [];
+var gameIndex;
 
 
 /*Initiates AJAX call. We send a query string which in this case is the game name and depending on whether we establish a 
@@ -117,6 +118,8 @@ function displayGameDetails(){
 }
 
 function addGameToCollection(){
+	var jsonGameData = $.xml2json(gameData);
+	alert(JSON.stringify(jsonGameData));
 	myGames.push(gameData);
 	
 	myGames.sort(function (a, b){
@@ -147,7 +150,7 @@ function buildGameList(){
 	};
 
 	$('#gameList li').click(function() {
-		openMovieDialog($(this).attr('data-myGamesIndex'));
+		openGameDialog($(this).attr('data-myGamesIndex'));
 	});
 
 	$('#gameList').listview("refresh");
@@ -155,4 +158,22 @@ function buildGameList(){
 	$('#gameCount').text(myGames.length);
 	
 	alert("Game added to collection!!");
+}
+
+function openGameDialog(index){
+	console.log(index);
+	gameIndex = index;
+	$("#movieOptionsDisplayInfoButton").empty();
+	$("#movieOptionsDisplayInfoButton").append("Game Info");
+	$('#movieOptionsDisplayInfoButton').attr('onclick', "displayCollectionGameDetails()");
+	$('#movieOprionsDeleteButton').attr('onclick', "deleteFromGameCollection()");
+	$('#movieOptionsLink').click();
+}
+
+function displayCollectionGameDetails(){
+	alert("Game Info");
+}
+
+function deleteFromGameCollection(){
+	alert("Delete Game");
 }

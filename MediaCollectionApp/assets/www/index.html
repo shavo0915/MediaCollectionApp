@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	<link rel="stylesheet" href="jquery.mobile-1.3.0/jquery.mobile-1.3.0.css" />
 	<script src="jQuery/jquery-1.8.2.js"></script>
+	<script src="jQuery Plugins/jquery.xml2json.js"></script>
 	<script src="jquery.mobile-1.3.0/jquery.mobile-1.3.0.js"></script>
 	<script src="js/mediaQuery.js"></script>
 	<script src="js/movieDbRequest.js"></script>
@@ -254,8 +255,8 @@
 			<h2>Options</h2>
 		</div>
 		<div data-role="content">
-			<a href="" data-role="button" data-icon="info" onclick="displayCollectedMovieDetails()">Movie Info</a>
-			<a href="" data-role="button" data-icon="delete" onclick="deleteMovie()">Delete</a>
+			<a href="" data-role="button" data-icon="info" onclick="displayCollectedMovieDetails()" id="movieOptionsDisplayInfoButton">Movie Info</a>
+			<a href="" data-role="button" data-icon="delete" onclick="deleteMovie()" id="movieOprionsDeleteButton">Delete</a>
 		</div>
 	</div>
 	
