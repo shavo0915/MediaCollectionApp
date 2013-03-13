@@ -96,6 +96,8 @@ function queryGameInfo(gameId){
 /*Set the data received locally into a local variable so that it can be later accessed*/
 function getGameInfoSuccess(data){  
 	gameData = data;
+	$('#addMediaButton').attr('onclick', "addGameToCollection()");
+	$('#displayInfoButton').attr('onclick', "displayGameDetails()");
 }
 
 /*Function used to view more detailed information on a chosen game*/
