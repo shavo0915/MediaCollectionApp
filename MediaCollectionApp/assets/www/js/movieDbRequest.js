@@ -300,7 +300,7 @@ function displayCollectedMovieDetails(){
 	for(var i = 1; i < 6; i++){
 		cast = cast +", " + myMovies[movieIndex].casts.cast[i].name;
 	}
-	var movieDetails = "<center><img src='" + imageURL + "' alt='" + movieTitle + "'/></center>" + "<b>Release Date: </b>" + myMovies[movieIndex].release_date + "</p>"
+	var movieDetails = "<center><img src='" + imageURL + "' alt='" + movieTitle + "' width='300'/></center>" + "<b>Release Date: </b>" + myMovies[movieIndex].release_date + "</p>"
 		+ "</p>" + "<p><b>Tagline: </b><br>" + myMovies[movieIndex].tagline + "<p><b>Overview: </b><br>" + myMovies[movieIndex].overview + "</p>" + "<p><b>Cast: </b><br>" + 
 		cast + "</p>" + "<p><b>Runtime: </b>" + myMovies[movieIndex].runtime +" min</p>";
 	$('#mediaTitle').append(movieTitle);
