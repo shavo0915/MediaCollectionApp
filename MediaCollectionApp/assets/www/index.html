@@ -127,7 +127,7 @@
 				
 			</ul>
 			
-			<a href="#movieOptions" id="movieOptionsLink" data-rel="dialog"></a>
+			<a href="#mediaOptions" id="mediaOptionsLink" data-rel="dialog"></a>
 			
 		</div><!-- /content-->
 		
@@ -187,14 +187,6 @@
 					</ul>
 			</div>
 			
-			<div data-role="popup" id="addMediaConfirm" data-overlay-theme="a" >
-				<h3>Movie Successfully Added!!</h3>
-			</div>
-			
-			<div data-role="popup" id="addExistingMedia" data-overlay-theme="a" >
-				<h3>Media Already Exists In Collection</h3>
-			</div>
-			
 		</div><!-- /content-->
 		
 	</div><!-- /page-->
@@ -250,13 +242,13 @@
 		
 	</div>
 
-	<div data-role="page" id="movieOptions">
+	<div data-role="page" id="mediaOptions">
 		<div data-role="header">
 			<h2>Options</h2>
 		</div>
 		<div data-role="content">
-			<a href="" data-role="button" data-icon="info" onclick="displayCollectedMovieDetails()" id="movieOptionsDisplayInfoButton">Movie Info</a>
-			<a href="" data-role="button" data-icon="delete" onclick="deleteMovie()" id="movieOprionsDeleteButton">Delete</a>
+			<a href="" data-role="button" data-icon="info" id="mediaOptionsDisplayInfoButton"></a>
+			<a href="" data-role="button" data-icon="delete" id="mediaOptionsDeleteButton"></a>
 		</div>
 	</div>
 	

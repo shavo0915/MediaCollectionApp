@@ -140,7 +140,7 @@ function getMovieConfigSuccess(data){
 	console.log(data);
 	
 	baseAddress = data.images.base_url;
-	posterSize = data.images.poster_sizes[0];
+	posterSize = data.images.poster_sizes[3];
 	localStorage.baseAddress = baseAddress;
 	localStorage.posterSize = posterSize;
 }
@@ -162,7 +162,11 @@ function errorAlert(status){
 function openMovieDialog(index){
 	console.log(index);
 	movieIndex = index;
-	$('#movieOptionsLink').click();
+	$("#mediaOptionsDisplayInfoButton").empty();
+	$("#mediaOptionsDisplayInfoButton").append("Movie Info");
+	$('#mediaOptionsDisplayInfoButton').attr('onclick', "displayCollectedMovieDetails()");
+	$('#mediaOptionsDeleteButton').attr('onclick', "deleteMovie()");
+	$('#mediaOptionsLink').click();
 }
 
 function deleteMovie(){
@@ -173,7 +177,7 @@ function deleteMovie(){
 		localStorage.movieList = JSON.stringify(myMovies);
 	}
 	buildMovieList();
-	$('#movieOptions').dialog('close');
+	$('#mediaOptions').dialog('close');
 }
 
 /**
@@ -197,10 +201,6 @@ function buildMovieList(){
 		}
 		$('#movieList').append(movieItem);
 	};
-	
-	/*$('#movieList li').on('taphold',function(event, ui){ 
-	openMovieDialog($(this).index());
-	}); */
 
 	$('#movieList li').click(function() {
 		openMovieDialog($(this).attr('data-myMoviesIndex'));
@@ -217,7 +217,7 @@ function getMovieDetail(movieID){
 	$.ajax({
 		url: detailURL,
 		dataType: "json",
-		data: {api_key: api_key},
+		data: {api_key: api_key, append_to_response: "casts"},
 		async: false,
 		success: getMovieDetailSuccess,
 		error: errorAlert,
@@ -260,11 +260,7 @@ function addMovie(){
 	
 	localStorage.movieList = JSON.stringify(myMovies);
 	
-	buildMovieList();
-	
-	//the popup is closed and the addMedia confirm popup is opened after giving the mediaQueryReturn popop time to close (neccessary for
-	//new popup to appear
-//	$('#addToCollection').dialog('close');
+	buildMovieList()
 	
 	setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'open' ) }, 100 );
 	$('#addMediaConfirm').bind({
@@ -281,9 +277,13 @@ function displayMovieDetails(){
 	$("#mediaInfoContent").empty();
 	var movieTitle = movieData.title;
 	var imageURL = selImageURL;
-	var movieDetails = "<center><img src='" + imageURL + "' alt='" + movieTitle + "'/></center>" + "<b>Release Date: </b>" + movieData.release_date + "</p>"
-	+ "</p>" + "<p><b>Tagline: </b><br>" + movieData.tagline + "<p><b>Overview: </b><br>" + movieData.overview + "</p>" + "<p><b>Runtime: </b>" + movieData.runtime + 
-		" min</p>";
+	var cast = movieData.casts.cast[0].name;
+	for(var i = 1; i < 6; i++){
+		cast = cast +", " + movieData.casts.cast[i].name;
+	}
+	var movieDetails = "<center><img src='" + imageURL + "' alt='" + movieTitle + "' width='300'/></center>" + "<b>Release Date: </b>" + movieData.release_date + "</p>"
+		+ "</p>" + "<p><b>Tagline: </b><br>" + movieData.tagline + "<p><b>Overview: </b><br>" + movieData.overview + "</p>" + "<p><b>Cast: </b><br>" + cast + "</p>" + 
+		"<p><b>Runtime: </b>" + movieData.runtime + " min</p>";
 	$('#mediaTitle').append(movieTitle);
 	$('#mediaInfoContent').append(movieDetails);
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
@@ -296,9 +296,13 @@ function displayCollectedMovieDetails(){
 	$("#mediaInfoContent").empty();
 	var movieTitle = myMovies[movieIndex].title;
 	var imageURL = baseAddress + posterSize + myMovies[movieIndex].poster_path;
+	var cast = myMovies[movieIndex].casts.cast[0].name;
+	for(var i = 1; i < 6; i++){
+		cast = cast +", " + myMovies[movieIndex].casts.cast[i].name;
+	}
 	var movieDetails = "<center><img src='" + imageURL + "' alt='" + movieTitle + "'/></center>" + "<b>Release Date: </b>" + myMovies[movieIndex].release_date + "</p>"
-	+ "</p>" + "<p><b>Tagline: </b><br>" + myMovies[movieIndex].tagline + "<p><b>Overview: </b><br>" + myMovies[movieIndex].overview + "</p>" + "<p><b>Runtime: </b>" + myMovies[movieIndex].runtime + 
-	" min</p>";
+		+ "</p>" + "<p><b>Tagline: </b><br>" + myMovies[movieIndex].tagline + "<p><b>Overview: </b><br>" + myMovies[movieIndex].overview + "</p>" + "<p><b>Cast: </b><br>" + 
+		cast + "</p>" + "<p><b>Runtime: </b>" + myMovies[movieIndex].runtime +" min</p>";
 	$('#mediaTitle').append(movieTitle);
 	$('#mediaInfoContent').append(movieDetails);
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});

@@ -163,11 +163,11 @@ function buildGameList(){
 function openGameDialog(index){
 	console.log(index);
 	gameIndex = index;
-	$("#movieOptionsDisplayInfoButton").empty();
-	$("#movieOptionsDisplayInfoButton").append("Game Info");
-	$('#movieOptionsDisplayInfoButton').attr('onclick', "displayCollectionGameDetails()");
-	$('#movieOprionsDeleteButton').attr('onclick', "deleteFromGameCollection()");
-	$('#movieOptionsLink').click();
+	$("#mediaOptionsDisplayInfoButton").empty();
+	$("#mediaOptionsDisplayInfoButton").append("Game Info");
+	$('#mediaOptionsDisplayInfoButton').attr('onclick', "displayCollectionGameDetails()");
+	$('#mediaOptionsDeleteButton').attr('onclick', "deleteFromGameCollection()");
+	$('#mediaOptionsLink').click();
 }
 
 function displayCollectionGameDetails(){
