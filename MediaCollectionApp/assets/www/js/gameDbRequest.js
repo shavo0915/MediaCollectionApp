@@ -120,6 +120,19 @@ function displayGameDetails(){
 /*Adds a game to the local collection array. We first have to convert the XML game data into a JSON object in order to be able to 
  * add to local storage. The list is then sorted alphabetically and the list is then built by calling another method.*/
 function addGameToCollection(){
+	
+	//this checks if the selected game already exists in the user's collection
+	for(var i = 0; i < myGames.length; i++){
+		if(myGames[i].Game.GameTitle == $(gameData).find("GameTitle").text() && myGames[i].Game.id == $(gameData).find("id").text()){
+			$('#addExistingMedia').bind({
+				popupafterclose: function(event, ui){
+					$('#addToCollection').dialog('close');
+				}
+			})
+			setTimeout( function(){ $( '#addExistingMedia' ).popup( 'open' ) }, 100 );
+			return;
+		}			
+	}
 	//Use a jQuery plugin in order to convert the XML object into JSON.
 	var jsonGameData = $.xml2json(gameData);
 	//Push the newly converted JSON object into the games array.
@@ -134,9 +147,7 @@ function addGameToCollection(){
 		return 0;
 	});
 		
-	//var xmlString = (new XMLSerializer()).serializeToString(myGames);
-	//alert(xmlString);
-	//console.log(xmlString);
+	localStorage.gameList = JSON.stringify(myGames);
 	
 	buildGameList();
 } 
@@ -151,12 +162,16 @@ function openGameDialog(index){
 	$('#mediaOptionsLink').click();
 }
 
-function displayCollectionGameDetails(){
-	alert("Game Info");
-}
-
+/*Deletes a game from local storage*/
 function deleteFromGameCollection(){
-	alert("Delete Game");
+	myGames.splice(gameIndex, 1);
+	if(myGames.length == 0){
+		localStorage.removeItem("gameList");
+	}else{
+		localStorage.gameList = JSON.stringify(myGames);
+	}
+	buildGameList();
+	$('#mediaOptions').dialog('close');
 }
 
 /*Builds the game list by iterating through the array of JSON game objects. */
@@ -214,4 +229,53 @@ function addThumbToURL(stringURL, baseIMGURL){
 	stringEnd = stringURL.substring(stringEndIndex, stringURL.length - 1);
 	reconstructedString = baseIMGURL + stringBeg + stringMiddle + stringEnd;
 	return reconstructedString;
+}
+
+/*Display more detailed information from selected game in local storage.*/
+function displayCollectionGameDetails(){
+	//clear header Title to account for multiple uses 
+	$("#mediaTitle").empty();
+	//Clear game content to account for multiple uses 
+	$("#mediaInfoContent").empty();
+	
+	var baseIMGURL = myGames[gameIndex].baseImgUrl;
+	var gameTitle = myGames[gameIndex].Game.GameTitle;
+	var gamePlatform = myGames[gameIndex].Game.Platform;
+	var gameReleaseDate = myGames[gameIndex].Game.ReleaseDate;
+	var gamePublisher = myGames[gameIndex].Game.Publisher;
+	var gameDeveloper = myGames[gameIndex].GameDeveloper;
+	var gameOverview = myGames[gameIndex].Game.Overview;
+	
+	//Checks to make sure that if there are fields in the game object that are missing the field will show up as blank instead
+	//of showing up as undefined
+	if(gamePlatform === undefined){
+		gamePlatform = "";
+	}
+	if(gameReleaseDate === undefined){
+		gameReleaseDate = "";
+	}
+	if(gamePublisher === undefined){
+		gamePublisher = "";
+	}
+	if(gameDeveloper === undefined){
+		gameDeveloper = "";
+	}
+	if(gameOverview === undefined){
+		gameOverview = "";
+	}
+	
+	var stringGameData = JSON.stringify(myGames[gameIndex].Game.Images.boxart);
+	if(stringGameData.indexOf(',') == -1){
+		var posterPath = baseIMGURL + myGames[gameIndex].Game.Images.boxart;
+	}
+	else{
+		var posterPath = baseIMGURL + myGames[gameIndex].Game.Images.boxart[1];
+	}
+	var stringPosterPath = JSON.stringify(posterPath);
+	var imageURL = addThumbToURL(stringPosterPath, baseIMGURL);
+	var gameDetails = "<center><img src='" + imageURL + "' alt='" + gameTitle + "'/></center>" + "<p><b>Platform: </b>" + gamePlatform + "</p><p>" + "<b>Release Date: </b>" + gameReleaseDate + "</p>"
+	+ "<p><b>Publisher: </b>" + gamePublisher + "<p><b>Developer: </b>" + gameDeveloper + "</p><p><b>Overview: </b><br>" + gameOverview + "</p>";
+	$('#mediaTitle').append(gameTitle);
+	$('#mediaInfoContent').append(gameDetails);
+	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
 }

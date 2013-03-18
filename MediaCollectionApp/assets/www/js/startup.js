@@ -9,4 +9,9 @@ function populateCollection(){
 		posterSize = localStorage.posterSize;
 		buildMovieList();
 	}
+	
+	if (localStorage.gameList) {
+		myGames = JSON.parse(localStorage.gameList);
+		buildGameList();
+	}
 }
