@@ -117,13 +117,16 @@ function displayGameDetails(){
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
 }
 
+/*Adds a game to the local collection array. We first have to convert the XML game data into a JSON object in order to be able to 
+ * add to local storage. The list is then sorted alphabetically and the list is then built by calling another method.*/
 function addGameToCollection(){
+	//Use a jQuery plugin in order to convert the XML object into JSON.
 	var jsonGameData = $.xml2json(gameData);
-	alert(JSON.stringify(jsonGameData));
-	myGames.push(gameData);
+	//Push the newly converted JSON object into the games array.
+	myGames.push(jsonGameData);
 	
 	myGames.sort(function (a, b){
-		var titleA = $(a).find("GameTitle").text().toLowerCase(), titleB = $(b).find("GameTitle").text().toLowerCase();
+		var titleA = a.Game.GameTitle.toLowerCase(), titleB = b.Game.GameTitle.toLowerCase();
 		if (titleA < titleB)
 			return -1;
 		if (titleA > titleB)
@@ -131,34 +134,12 @@ function addGameToCollection(){
 		return 0;
 	});
 		
-	//localStorage.gameList = (new XMLSerializer()).serializeToString(myGames);
-	//localStorage.gameList = myGames;
+	//var xmlString = (new XMLSerializer()).serializeToString(myGames);
+	//alert(xmlString);
+	//console.log(xmlString);
 	
 	buildGameList();
 } 
-
-function buildGameList(){
-	$('#gameList').empty();
-	
-	for(var x in myGames){
-		var posterPath = $(myGames[x]).find("baseImgUrl").text() + $(myGames[x]).find("boxart[side='front']").attr("thumb");
-		var gameItem = "<li data-myGamesIndex = " + x + "><a href=''><img src=" + posterPath + "/><h3>" + $(myGames[x]).find("GameTitle").text() + "</h3>"
-		+ "<p>" + $(myGames[x]).find("ReleaseDate").text() + "</p><p>" + $(myGames[x]).find("Platform").text() + "</p></a></li>";
-		var elementEnd;
-
-		$('#gameList').append(gameItem);
-	};
-
-	$('#gameList li').click(function() {
-		openGameDialog($(this).attr('data-myGamesIndex'));
-	});
-
-	$('#gameList').listview("refresh");
-
-	$('#gameCount').text(myGames.length);
-	
-	alert("Game added to collection!!");
-}
 
 function openGameDialog(index){
 	console.log(index);
@@ -176,4 +157,61 @@ function displayCollectionGameDetails(){
 
 function deleteFromGameCollection(){
 	alert("Delete Game");
+}
+
+/*Builds the game list by iterating through the array of JSON game objects. */
+function buildGameList(){
+	$('#gameList').empty();
+	
+	for(var x in myGames){
+		var baseIMGURL = myGames[x].baseImgUrl;
+		var stringGameData = JSON.stringify(myGames[x].Game.Images.boxart);
+		if(stringGameData.indexOf(',') == -1){
+			var posterPath = baseIMGURL + myGames[x].Game.Images.boxart;
+		}
+		else{
+			var posterPath = baseIMGURL + myGames[x].Game.Images.boxart[1];
+		}
+		var stringPosterPath = JSON.stringify(posterPath);
+		var thumbIMGURL = addThumbToURL(stringPosterPath, baseIMGURL);
+		var gameItem = "<li data-myGamesIndex = " + x + "><a href=''><img src=" + thumbIMGURL + "/><h3>" + myGames[x].Game.GameTitle + "</h3>"
+		+ "<p>" + myGames[x].Game.ReleaseDate + "</p><p>" + myGames[x].Game.Platform + "</p></a></li>";
+		var elementEnd;
+
+		$('#gameList').append(gameItem);
+	};
+
+	$('#gameList li').click(function() {
+		openGameDialog($(this).attr('data-myGamesIndex'));
+	});
+
+	$('#gameList').listview("refresh");
+
+	$('#gameCount').text(myGames.length);
+	
+	setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'open' ) }, 100 );
+	$('#addMediaConfirm').bind({
+		popupafterclose: function(event, ui){
+			$('#addToCollection').dialog('close');
+		}
+	})
+}
+
+/*Since there was a conversion from an XML game object to a JSON one there was unfortunately some data loss.
+ *One of these was the loss of the thumb image for the front game cover. Fortunately for us the URL's are very similar with the
+ *exception  of a "/thumb/" somewhere in the string so we are able to insert this and build the URL.*/
+function addThumbToURL(stringURL, baseIMGURL){
+	var stringBegIndex;
+	var stringEndIndex;	
+	var stringBeg;
+	var stringMiddle = "thumb";
+	var stringEnd;
+	var reconstructedString;
+	
+	stringBegIndex = stringURL.indexOf('boxart/');
+	stringEndIndex = stringURL.indexOf('/original');
+	stringBeg = stringURL.substring(stringBegIndex, stringEndIndex + 1);
+	stringEnd = stringURL.substring(stringEndIndex, stringURL.length - 1);
+	reconstructedString = baseIMGURL + stringBeg + stringMiddle + stringEnd;
+	return reconstructedString;
 }
