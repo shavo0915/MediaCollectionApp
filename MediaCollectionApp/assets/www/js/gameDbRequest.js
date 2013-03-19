@@ -110,8 +110,13 @@ function displayGameDetails(){
 	var gameTitle = $(gameData).find("GameTitle").text();
 	var imageURL = $(gameData).find("baseImgUrl").text() + $(gameData).find("boxart[side='front']").attr("thumb");
 	console.log("IMG Source: " + imageURL);
-	var gameDetails = "<center><img src='" + imageURL + "' alt='" + gameTitle + "'/></center>" + "<p><b>Platform: </b>" + $(gameData).find("Platform").text() + "</p><p>" + "<b>Release Date: </b>" + $(gameData).find("ReleaseDate").text() + "</p>"
-	+ "<p><b>Publisher: </b>" + $(gameData).find("Publisher").text() + "<p><b>Developer: </b>" + $(gameData).find("Developer").text() + "</p><p><b>Overview: </b><br>" + $(gameData).find("Overview").text() + "</p>";
+	var gameDetails = "<center><img src='" + imageURL + "' alt='" + gameTitle + "'/></center>" + "<p><b>Platform: </b>" + 
+	$(gameData).find("Platform").text() + "</p><p><b>Genre: </b>" + $(gameData).find("Genres").text() + 
+	"</p><p><b>Players: </b>" + $(gameData).find("Players").text() + "</p><p>" + "<b>Release Date: </b>" + 
+	$(gameData).find("ReleaseDate").text() + "</p>"+ "<p><b>Publisher: </b>" + $(gameData).find("Publisher").text() + 
+	"<p><b>Developer: </b>" + $(gameData).find("Developer").text() + "</p><p><b>Overview: </b><br>" + 
+	$(gameData).find("Overview").text() + "</p>";
+	
 	$('#mediaTitle').append(gameTitle);
 	$('#mediaInfoContent').append(gameDetails);
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
@@ -149,14 +154,16 @@ function addGameToCollection(){
 		
 	localStorage.gameList = JSON.stringify(myGames);
 	
+	alert(JSON.stringify(myGames));
+	
 	buildGameList();
 } 
 
 function openGameDialog(index){
 	console.log(index);
 	gameIndex = index;
-	$("#mediaOptionsDisplayInfoButton").empty();
-	$("#mediaOptionsDisplayInfoButton").append("Game Info");
+	$("#mediaOptionsDisplayInfoButtonTitle").empty();
+	$("#mediaOptionsDisplayInfoButtonTitle").append("Game Info");
 	$('#mediaOptionsDisplayInfoButton').attr('onclick', "displayCollectionGameDetails()");
 	$('#mediaOptionsDeleteButton').attr('onclick', "deleteFromGameCollection()");
 	$('#mediaOptionsLink').click();
@@ -245,6 +252,8 @@ function displayCollectionGameDetails(){
 	var gamePublisher = myGames[gameIndex].Game.Publisher;
 	var gameDeveloper = myGames[gameIndex].GameDeveloper;
 	var gameOverview = myGames[gameIndex].Game.Overview;
+	var gameGenre = myGames[gameIndex].Game.Genres.genre;
+	var gamePlayerNumber = myGames[gameIndex].Game.Players;
 	
 	//Checks to make sure that if there are fields in the game object that are missing the field will show up as blank instead
 	//of showing up as undefined
@@ -263,6 +272,12 @@ function displayCollectionGameDetails(){
 	if(gameOverview === undefined){
 		gameOverview = "";
 	}
+	if(gameGenre === undefined){
+		gameGenre = "";
+	}
+	if(gamePlayerNumber === undefined){
+		gamePlayerNumber = "";
+	}
 	
 	var stringGameData = JSON.stringify(myGames[gameIndex].Game.Images.boxart);
 	if(stringGameData.indexOf(',') == -1){
@@ -273,8 +288,11 @@ function displayCollectionGameDetails(){
 	}
 	var stringPosterPath = JSON.stringify(posterPath);
 	var imageURL = addThumbToURL(stringPosterPath, baseIMGURL);
-	var gameDetails = "<center><img src='" + imageURL + "' alt='" + gameTitle + "'/></center>" + "<p><b>Platform: </b>" + gamePlatform + "</p><p>" + "<b>Release Date: </b>" + gameReleaseDate + "</p>"
-	+ "<p><b>Publisher: </b>" + gamePublisher + "<p><b>Developer: </b>" + gameDeveloper + "</p><p><b>Overview: </b><br>" + gameOverview + "</p>";
+	var gameDetails = "<center><img src='" + imageURL + "' alt='" + gameTitle + "'/></center>" + "<p><b>Platform: </b>" 
+	+ gamePlatform + "</p><p><b>Genre: </b>" + gameGenre + "</p><p><b>Players: </b>" + gamePlayerNumber + "</p><p>" 
+	+ "<b>Release Date: </b>" + gameReleaseDate + "</p>" + "<p><b>Publisher: </b>" + gamePublisher + 
+	"<p><b>Developer: </b>" + gameDeveloper + "</p><p><b>Overview: </b><br>" + gameOverview + "</p>";
+	
 	$('#mediaTitle').append(gameTitle);
 	$('#mediaInfoContent').append(gameDetails);
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});

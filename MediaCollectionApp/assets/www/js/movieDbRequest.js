@@ -162,8 +162,8 @@ function errorAlert(status){
 function openMovieDialog(index){
 	console.log(index);
 	movieIndex = index;
-	$("#mediaOptionsDisplayInfoButton").empty();
-	$("#mediaOptionsDisplayInfoButton").append("Movie Info");
+	$("#mediaOptionsDisplayInfoButtonTitle").empty();
+	$("#mediaOptionsDisplayInfoButtonTitle").append("Movie Info");
 	$('#mediaOptionsDisplayInfoButton').attr('onclick', "displayCollectedMovieDetails()");
 	$('#mediaOptionsDeleteButton').attr('onclick', "deleteMovie()");
 	$('#mediaOptionsLink').click();
