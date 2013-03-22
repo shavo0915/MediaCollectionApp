@@ -247,7 +247,7 @@ function displayCollectionGameDetails(){
 	var gamePlatform = myGames[gameIndex].Game.Platform;
 	var gameReleaseDate = myGames[gameIndex].Game.ReleaseDate;
 	var gamePublisher = myGames[gameIndex].Game.Publisher;
-	var gameDeveloper = myGames[gameIndex].GameDeveloper;
+	var gameDeveloper = myGames[gameIndex].Game.Developer;
 	var gameOverview = myGames[gameIndex].Game.Overview;
 	var gamePlayerNumber = myGames[gameIndex].Game.Players;
 	
