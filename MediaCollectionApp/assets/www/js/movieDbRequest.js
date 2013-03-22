@@ -33,14 +33,16 @@ function getTMDbConfig(){
 function getMovieInfo(title){
 	query = queryFormat(title);
 	$.ajax({
+		beforeSend: function() { $.mobile.showPageLoadingMsg(); },
 		url: "http://api.themoviedb.org/3/search/movie",
 		dataType: "json",
 		data: {api_key: api_key, query: query, include_adult: false},
 		success: getMovieInfoSuccess,
 		error: errorAlert,
 		complete: function(){
-				console.log("getMovieInfo Done");
-			  }
+			$.mobile.hidePageLoadingMsg();
+			console.log("getMovieInfo Done");
+			}
 	});
 }
 
@@ -215,6 +217,7 @@ function getMovieDetail(movieID){
 	var detailURL = "http://api.themoviedb.org/3/movie/" + movieID
 	
 	$.ajax({
+		beforeSend: function() { $.mobile.showPageLoadingMsg(); },
 		url: detailURL,
 		dataType: "json",
 		data: {api_key: api_key, append_to_response: "casts"},
@@ -222,6 +225,7 @@ function getMovieDetail(movieID){
 		success: getMovieDetailSuccess,
 		error: errorAlert,
 		complete: function(){
+			$.mobile.hidePageLoadingMsg();
 			console.log("getTMDbConfig done");
 		}
 	});

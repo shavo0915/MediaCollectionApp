@@ -9,15 +9,14 @@ var gameIndex;
  */ 
 function getGameListInfo(gameName){
 	$.ajax({
+		beforeSend: function() { $.mobile.showPageLoadingMsg(); },
 		url: " http://thegamesdb.net/api/GetGamesList.php",
 		dataType: "xml",
 		data: {name: gameName},
 		success: getGameListInfoSuccess,
-		error: function(status){
-			alert("Error");
-		    console.log("Error: Service Unavailable"); 
-		 },
+		error: errorAlert,
 		complete: function(){
+			$.mobile.hidePageLoadingMsg();
 			console.log("getGameInfo Done");
 			  }
 	});
@@ -80,15 +79,14 @@ function getChosenGameInfo(index){
 /*Query call for more detailed game information using a game id for the query.*/
 function queryGameInfo(gameId){
 	$.ajax({
+		beforeSend: function() { $.mobile.showPageLoadingMsg(); },
 		url: " http://thegamesdb.net/api/GetGame.php?",
 		dataType: "xml",
 		data: {id: gameId},
 		success: getGameInfoSuccess,
-		error: function(status){
-			alert("Error");
-		    console.log("Error: Service Unavailable"); 
-		 },
+		error: errorAlert,
 		complete: function(){
+			$.mobile.hidePageLoadingMsg();
 			console.log("getGameInfo Done");
 			  }
 	});
