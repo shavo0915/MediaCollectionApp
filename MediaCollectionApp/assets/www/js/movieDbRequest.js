@@ -61,7 +61,7 @@ function getMovieInfoSuccess(data){
 		$('#mediaQueryReturn').popup('open');
 		return;
 	}
-	
+	console.log(data);
 	movies = data;
 	for(var x in data.results){
 		var listElement = "<li><a href='#'><h1>" + data.results[x].title + "</h1>";
@@ -226,7 +226,7 @@ function getMovieDetail(movieID){
 		error: errorAlert,
 		complete: function(){
 			$.mobile.hidePageLoadingMsg();
-			console.log("getTMDbConfig done");
+			console.log("getMovieDetail done");
 		}
 	});
 }
@@ -281,9 +281,17 @@ function displayMovieDetails(){
 	$("#mediaInfoContent").empty();
 	var movieTitle = movieData.title;
 	var imageURL = selImageURL;
-	var cast = movieData.casts.cast[0].name;
-	for(var i = 1; i < 6; i++){
-		cast = cast +", " + movieData.casts.cast[i].name;
+	var castLength = movieData.casts.cast.length;
+	if(castLength == 0){
+		cast = "";
+	}else{
+		if(castLength > 6){
+			castLength = 6;
+		}
+		var cast = movieData.casts.cast[0].name;
+		for(var i = 1; i < castLength; i++){
+			cast = cast +", " + movieData.casts.cast[i].name;
+		}
 	}
 	var movieDetails = "<center><img src='" + imageURL + "' alt='" + movieTitle + "' width='300'/></center>" + "<b>Release Date: </b>" + movieData.release_date + "</p>"
 		+ "</p>" + "<p><b>Tagline: </b><br>" + movieData.tagline + "<p><b>Overview: </b><br>" + movieData.overview + "</p>" + "<p><b>Cast: </b><br>" + cast + "</p>" + 
