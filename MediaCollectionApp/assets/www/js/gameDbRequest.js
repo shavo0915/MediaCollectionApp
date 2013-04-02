@@ -246,7 +246,7 @@ function displayCollectionGameDetails(){
 	var gameReleaseDate = myGames[gameIndex].Game.ReleaseDate;
 	var gamePublisher = myGames[gameIndex].Game.Publisher;
 	var gameDeveloper = myGames[gameIndex].Game.Developer;
-	var gameOverview = myGames[gameIndex].Game.Overview;
+	var gameOverview;
 	var gamePlayerNumber = myGames[gameIndex].Game.Players;
 	
 	//Checks to make sure that if there are fields in the game object that are missing the field will show up as blank instead
@@ -263,8 +263,16 @@ function displayCollectionGameDetails(){
 	if(gameDeveloper === undefined){
 		gameDeveloper = "";
 	}
-	if(gameOverview === undefined){
+	if(myGames[gameIndex].Game.Overview === undefined){
 		gameOverview = "";
+	}
+	else{
+		if(JSON.stringify(myGames[gameIndex].Game.Overview).indexOf('"p":') == -1){
+			gameOverview = myGames[gameIndex].Game.Overview;
+		}
+		else{
+			gameOverview = myGames[gameIndex].Game.Overview.p;
+		}
 	}
 	if(gamePlayerNumber === undefined){
 		gamePlayerNumber = "";
