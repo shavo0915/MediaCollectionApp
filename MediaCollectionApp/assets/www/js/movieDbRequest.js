@@ -61,7 +61,7 @@ function getMovieInfoSuccess(data){
 		$('#mediaQueryReturn').popup('open');
 		return;
 	}
-	console.log(data);
+//	console.log(data);
 	movies = data;
 	for(var x in data.results){
 		var listElement = "<li><a href='#'><h1>" + data.results[x].title + "</h1>";
@@ -119,7 +119,7 @@ function movieSelect(index){
 	
 	$('#mediaQueryReturn').popup('close');
 	
-	getMovieDetail(selection.id)
+	getMovieDetail(selection.id);
 	
 
 }
@@ -221,7 +221,6 @@ function getMovieDetail(movieID){
 		url: detailURL,
 		dataType: "json",
 		data: {api_key: api_key, append_to_response: "casts"},
-		async: false,
 		success: getMovieDetailSuccess,
 		error: errorAlert,
 		complete: function(){
@@ -308,9 +307,17 @@ function displayCollectedMovieDetails(){
 	$("#mediaInfoContent").empty();
 	var movieTitle = myMovies[movieIndex].title;
 	var imageURL = baseAddress + posterSize + myMovies[movieIndex].poster_path;
-	var cast = myMovies[movieIndex].casts.cast[0].name;
-	for(var i = 1; i < 6; i++){
-		cast = cast +", " + myMovies[movieIndex].casts.cast[i].name;
+	var castLength = myMovies[movieIndex].casts.cast.length;
+	if(castLength == 0){
+		cast = "";
+	}else{
+		if(castLength > 6){
+			castLength = 6;
+		}
+		var cast = myMovies[movieIndex].casts.cast[0].name;
+		for(var i = 1; i < castLength; i++){
+			cast = cast +", " + myMovies[movieIndex].casts.cast[i].name;
+		}
 	}
 	var movieDetails = "<center><img src='" + imageURL + "' alt='" + movieTitle + "' width='300'/></center>" + "<b>Release Date: </b>" + myMovies[movieIndex].release_date + "</p>"
 		+ "</p>" + "<p><b>Tagline: </b><br>" + myMovies[movieIndex].tagline + "<p><b>Overview: </b><br>" + myMovies[movieIndex].overview + "</p>" + "<p><b>Cast: </b><br>" + 

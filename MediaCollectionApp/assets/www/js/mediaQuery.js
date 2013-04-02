@@ -11,7 +11,7 @@ function queryMedia(){
 		alert("You have chosen Music");
 	}
 	else if(chosenMedia == "shows"){
-		alert("You have chosen TV Shows");
+		getTVShowInfo(queryString);
 	}
 	else if(chosenMedia == "books"){
 		alert("You have chosen Books");

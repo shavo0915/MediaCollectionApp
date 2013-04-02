@@ -11,6 +11,7 @@
 	<script src="js/movieDbRequest.js"></script>
 	<script src="js/gameDbRequest.js"></script>
 	<script src="js/startup.js"></script>
+	<script src="js/tvDbRequest.js"></script>
 </head> 
 <body> 
 
@@ -51,7 +52,7 @@
 				<li>
 					<a href="#myShows">
 						<h3>TV Shows</h3>
-						<span class="ui-li-count">121</span>
+						<span id="tvShowCount" class="ui-li-count">0</span>
 					</a>
 				</li>					
 			</ul>
@@ -141,14 +142,7 @@
 		</div>
 		
 		<div data-role="content">
-			<ul data-role="listview" data-filter="true" data-filter-placeholder="Search Stored TV Shows..">
-				<li>
-					<a href="">
-						<img src="img/NEWGIRL.jpg"/>
-						<h3>The New Girl</h3>
-						<p>2011</p>						
-					</a>
-				</li>
+			<ul data-role="listview" id="tvShowList" data-autodividers="true" data-filter="true" data-filter-placeholder="Search Stored TV Shows..">
 				
 			</ul>
 		</div><!-- /content-->
