@@ -242,7 +242,7 @@ function displayCollectedTVShowDetails(){
 	$("#mediaTitle").empty();
 	//Clear game content to account for multiple uses 
 	$("#mediaInfoContent").empty();
-	var tvShowTitle = myShows[tvIndex].Series.SerieName;
+	var tvShowTitle = myShows[tvIndex].Series.SeriesName;
 	var imageURL = "http://thetvdb.com/banners/" + myShows[tvIndex].Series.poster;
 	var castLength = myShows[tvIndex].Series.Actors.length;
 	var cast = "";
