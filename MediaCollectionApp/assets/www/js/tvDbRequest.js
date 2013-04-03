@@ -112,7 +112,7 @@ function addTVShow(){
 		}			
 	}
 	
-	//adds the selected movie object to the array of movies representing the user's movie collection and then sorts them alphabetically
+	//adds the selected tv show object to the array of shows representing the user's movie collection and then sorts them alphabetically
 	myShows.push(tvDataDetails);
 	myShows.sort(function (a, b){
 		var titleA = a.Series.SeriesName.toLowerCase(), titleB = b.Series.SeriesName.toLowerCase();
@@ -231,7 +231,7 @@ function deleteTVShow(){
 	if(myShows.length == 0){
 		localStorage.removeItem("tvShowList");
 	}else{
-		localStorage.movieList = JSON.stringify(myShows);
+		localStorage.tvList = JSON.stringify(myShows);
 	}
 	buildTVList();
 	$('#mediaOptions').dialog('close');
