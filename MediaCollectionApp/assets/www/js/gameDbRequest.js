@@ -101,6 +101,55 @@ function getGameInfoSuccess(data){
 
 /*Function used to view more detailed information on a chosen game*/
 function displayGameDetails(){
+	var platform = "<b>Platform: </b>";
+	var players = "<b>Players: </b>";
+	var rDate = "<b>Release Date: </b>";
+	var publisher = "<b>Publisher: </b>";
+	var dev = "<b>Developer: </b>";
+	var overview = "<b>Overview: </b><br>";
+	
+	if(gameData.getElementsByTagName("Platform").length > 0){
+		platform += $(gameData).find("Platform").text();
+	}
+	else{
+		platform = "";
+	}
+	
+	if(gameData.getElementsByTagName("Players").length > 0){
+		players += $(gameData).find("Players").text();
+	}
+	else{
+		players = "";
+	}
+	
+	if(gameData.getElementsByTagName("ReleaseDate").length > 0){
+		rDate += $(gameData).find("ReleaseDate").text();
+	}
+	else{
+		rDate = "";
+	}
+	
+	if(gameData.getElementsByTagName("Publisher").length > 0){
+		publisher += $(gameData).find("Publisher").text();
+	}
+	else{
+		publisher = "";
+	}
+	
+	if(gameData.getElementsByTagName("Developer").length > 0){
+		dev += $(gameData).find("Developer").text();
+	}
+	else{
+		dev = "";
+	}
+	
+	if(gameData.getElementsByTagName("Overview").length > 0){
+		overview += $(gameData).find("Overview").text();
+	}
+	else{
+		overview = "";
+	}
+	
 	//clear header Title to account for multiple uses 
 	$("#mediaTitle").empty();
 	//Clear game content to account for multiple uses 
@@ -108,11 +157,11 @@ function displayGameDetails(){
 	var gameTitle = $(gameData).find("GameTitle").text();
 	var imageURL = $(gameData).find("baseImgUrl").text() + $(gameData).find("boxart[side='front']").attr("thumb");
 	console.log("IMG Source: " + imageURL);
-	var gameDetails = "<center><img src='" + imageURL + "' alt='" + gameTitle + "'/></center>" + "<p><b>Platform: </b>" + 
-	$(gameData).find("Platform").text() + "</p><p><b>Players: </b>" + $(gameData).find("Players").text() + 
-	"</p><p>" + "<b>Release Date: </b>" + $(gameData).find("ReleaseDate").text() + "</p>"+ "<p><b>Publisher: </b>" + 
-	$(gameData).find("Publisher").text() + "<p><b>Developer: </b>" + $(gameData).find("Developer").text() + "</p><p><b>Overview: </b><br>" + 
-	$(gameData).find("Overview").text() + "</p>";
+	var gameDetails = "<center><img src='" + imageURL + "' alt='" + gameTitle + "'/></center>" + "<p>" + 
+	platform + "</p><p>" + players + 
+	"</p><p>" + rDate + "</p>"+ "<p>" + 
+	publisher + "<p>" + dev + "</p><p>" + 
+	overview + "</p>";
 	
 	$('#mediaTitle').append(gameTitle);
 	$('#mediaInfoContent').append(gameDetails);
@@ -178,6 +227,7 @@ function deleteFromGameCollection(){
 
 /*Builds the game list by iterating through the array of JSON game objects. */
 function buildGameList(){
+	var mListGameURL = "";
 	$('#gameList').empty();
 	
 	for(var x in myGames){
@@ -194,9 +244,20 @@ function buildGameList(){
 		var gameItem = "<li data-myGamesIndex = " + x + "><a href=''><img src=" + thumbIMGURL + "/><h3>" + myGames[x].Game.GameTitle + "</h3>"
 		+ "<p>" + myGames[x].Game.ReleaseDate + "</p><p>" + myGames[x].Game.Platform + "</p></a></li>";
 		var elementEnd;
+		
+		/*if(x = 0){
+			mListGameURL = thumbIMGURL;
+		}*/
 
 		$('#gameList').append(gameItem);
 	};
+	
+	/*if(myGames.length > 0){
+		var imgStr = "<img src = '" + mListGameURL + "'/>";
+		$('#myGames').append(imgStr);
+		$('#mainList').listview("refresh");
+		//$('#gameImage').attr('src', mListGameURL);
+	}*/
 
 	$('#gameList li').click(function() {
 		openGameDialog($(this).attr('data-myGamesIndex'));
@@ -242,12 +303,12 @@ function displayCollectionGameDetails(){
 	
 	var baseIMGURL = myGames[gameIndex].baseImgUrl;
 	var gameTitle = myGames[gameIndex].Game.GameTitle;
-	var gamePlatform = myGames[gameIndex].Game.Platform;
-	var gameReleaseDate = myGames[gameIndex].Game.ReleaseDate;
-	var gamePublisher = myGames[gameIndex].Game.Publisher;
-	var gameDeveloper = myGames[gameIndex].Game.Developer;
-	var gameOverview;
-	var gamePlayerNumber = myGames[gameIndex].Game.Players;
+	var gamePlatform = "<b>Platform: </b>" + myGames[gameIndex].Game.Platform;
+	var gameReleaseDate = "<b>Release Date: </b>" + myGames[gameIndex].Game.ReleaseDate;
+	var gamePublisher = "<b>Publisher: </b>" + myGames[gameIndex].Game.Publisher;
+	var gameDeveloper = "<b>Developer: </b>" + myGames[gameIndex].Game.Developer;
+	var gameOverview = "<b>Overview: </b><br>";
+	var gamePlayerNumber = "<b>Players: </b>" + myGames[gameIndex].Game.Players;
 	
 	//Checks to make sure that if there are fields in the game object that are missing the field will show up as blank instead
 	//of showing up as undefined
@@ -268,13 +329,13 @@ function displayCollectionGameDetails(){
 	}
 	else{
 		if(JSON.stringify(myGames[gameIndex].Game.Overview).indexOf('"p":') == -1){
-			gameOverview = myGames[gameIndex].Game.Overview;
+			gameOverview += myGames[gameIndex].Game.Overview;
 		}
 		else{
-			gameOverview = myGames[gameIndex].Game.Overview.p;
+			gameOverview += myGames[gameIndex].Game.Overview.p;
 		}
 	}
-	if(gamePlayerNumber === undefined){
+	if(myGames[gameIndex].Game.Players === undefined){
 		gamePlayerNumber = "";
 	}
 	
@@ -287,10 +348,10 @@ function displayCollectionGameDetails(){
 	}
 	var stringPosterPath = JSON.stringify(posterPath);
 	var imageURL = addThumbToURL(stringPosterPath, baseIMGURL);
-	var gameDetails = "<center><img src='" + imageURL + "' alt='" + gameTitle + "'/></center>" + "<p><b>Platform: </b>" 
-	+ gamePlatform + "</p><p><b>Players: </b>" + gamePlayerNumber + "</p><p>" 
-	+ "<b>Release Date: </b>" + gameReleaseDate + "</p>" + "<p><b>Publisher: </b>" + gamePublisher + 
-	"<p><b>Developer: </b>" + gameDeveloper + "</p><p><b>Overview: </b><br>" + gameOverview + "</p>";
+	var gameDetails = "<center><img src='" + imageURL + "' alt='" + gameTitle + "'/></center>" + "<p>" 
+	+ gamePlatform + "</p><p>" + gamePlayerNumber + "</p><p>" 
+	+ gameReleaseDate + "</p>" + "<p>" + gamePublisher + 
+	"<p>" + gameDeveloper + "</p><p>" + gameOverview + "</p>";
 	
 	$('#mediaTitle').append(gameTitle);
 	$('#mediaInfoContent').append(gameDetails);

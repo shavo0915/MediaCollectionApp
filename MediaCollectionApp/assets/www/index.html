@@ -25,7 +25,7 @@
 		</div><!-- /header -->
 		
 		<div data-role="content">
-			<ul data-role="listview">
+			<ul data-role="listview" id="mainList">
 				<li>
 					<a href="#myMusic">
 						<h3>Music</h3>
@@ -35,7 +35,7 @@
 				<li>
 					<a href="#myBooks">
 						<h3>Books</h3>
-						<span class="ui-li-count">103</span>
+						<span id="bookCount"class="ui-li-count">0</span>
 					</a>
 				</li>
 				<li>
@@ -90,14 +90,8 @@
 		</div><!-- /header-->
 		
 		<div data-role="content">
-			<ul data-role="listview" data-filter="true" data-filter-placeholder="Search Stored Books...">
-				<li>
-					<a href="">
-						<img src="img\Hobbit_cover.jpg" />
-						<h3>The Hobbit</h3>
-						<p>J. R. R. Tolkien</p>
-					</a>
-				</li>			
+			<ul data-role="listview" id="bookList" data-filter="true" data-filter-placeholder="Search Stored Books...">
+		
 			</ul>
 		</div><!-- /content-->
 		
@@ -265,6 +259,10 @@
 			
 			<div data-role="popup" id="addExistingMedia" data-overlay-theme="a" >
 				<h3>Media Already Exists In Collection</h3>
+			</div>
+			
+			<div data-role="popup" id="addMediaFailed" data-overlay-theme="a" >
+				<h3>Sorry!! :-( Media Not Added Due To Insufficient Info!</h3>
 			</div>
 
 		</div>

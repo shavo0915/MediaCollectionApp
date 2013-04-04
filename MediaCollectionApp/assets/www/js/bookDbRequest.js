@@ -20,6 +20,9 @@ function getBookListInfo(bookName){
 }
 
 function getBookListInfoSuccess(data){
+	var authors; 
+	var pYear;
+	var edition;
 	clearList();
 	//Checks to see if the query returned no results, if so, displays popup indicating no matches were found and exit function
 	if(data.docs.length == 0){
@@ -31,9 +34,29 @@ function getBookListInfoSuccess(data){
 	}
 	console.log(data);
 	booksList = data;
-	for(var x in data.docs){		
-		var listElement = "<li><a href='#'><h1>" + data.docs[x].title + "</h1><p>" + data.docs[x].author_name + "</p><p>" + 
-		data.docs[x].edition_count + " edition(s)</p><p>First published in " + data.docs[x].first_publish_year + "</p>";
+	
+	for(var x in data.docs){
+		
+		if(data.docs[x].author_name !== undefined){
+			authors = data.docs[x].author_name;
+		}
+		else{
+			authors = ""
+		}
+		if(data.docs[x].first_publish_year !== undefined){
+			pYear = "First published in " + data.docs[x].first_publish_year;
+		}
+		else{
+			pYear = "";
+		}
+		if(data.docs[x].edition_count  !== undefined && data.docs[x].edition_count != 0){
+			edition = data.docs[x].edition_count + " edition(s)";
+		}
+		else{
+			edition = ""
+		}
+		var listElement = "<li><a href='#'><h1>" + data.docs[x].title + "</h1><p>" + authors + "</p><p>" + 
+		edition + "</p><p>" + pYear + "</p>";
 		$('#mediaReturn').append(listElement);
 	}
 	
@@ -87,11 +110,11 @@ function getBookInfoSuccess(data){
 }
 
 function displayBookDetails(){
-	var authors = "";
-	var subjects = "";
-	var subjectPeople = "";
-	var excerpts = "";
-	var pages = "";
+	var authors = "<b>Author(s): </b>";
+	var subjects = "<b>Subjects: </b>";
+	var subjectPeople = "<b>People: </b>";
+	var excerpts = "<b>Excerpts: </b>";
+	var pages = "<b>Pages: </b>";
 	
 	$("#mediaTitle").empty();
 	//Clear game content to account for multiple uses 
@@ -110,8 +133,11 @@ function displayBookDetails(){
 				}
 			}
 			else{
-				authors = bookData[OLID].authors[0].name + ".";
+				authors += bookData[OLID].authors[0].name + ".";
 			}
+		}
+		else{
+			authors = "";
 		}
 	
 		if(bookData[OLID].subjects !== undefined){
@@ -126,8 +152,11 @@ function displayBookDetails(){
 				}
 			}
 			else{
-				subjects = bookData[OLID].subjects[0].name + ".";
+				subjects += bookData[OLID].subjects[0].name + ".";
 			}
+		}
+		else{
+			subjects = "";
 		}
 	
 		if(bookData[OLID].subject_people !== undefined){
@@ -142,25 +171,34 @@ function displayBookDetails(){
 				}
 			}	
 			else{
-				subjectPeople = bookData[OLID].subject_people[0].name + ".";
+				subjectPeople += bookData[OLID].subject_people[0].name + ".";
 			}
+		}
+		else{
+			subjectPeople = "";
 		}
 	
 		if(bookData[OLID].excerpts !== undefined){
 			if(bookData[OLID].excerpts.length > 1){
-				excerpts = bookData[OLID].excerpts[0].text + ".";
+				excerpts += bookData[OLID].excerpts[0].text + ".";
 			}
+		}
+		else{
+			excerpts = "";
 		}
 		
 		if(bookData[OLID].number_of_pages !== undefined){
-			pages = bookData[OLID].number_of_pages + ".";
+			pages += bookData[OLID].number_of_pages + ".";
+		}
+		else{
+			pages = "";
 		}
 
 		var bookTitle = bookData[OLID].title;
 		var imageURL = bookData[OLID].cover["large"];
-		var bookDetails = "<center><img src='" + imageURL + "' alt='" + bookTitle + "' width='300'/></center>" + "<p><b>Author(s): </b>" + 
-		authors + "</p><p><b>Pages: </b>" + pages + "<p><p><b>Subjects: </b>" + subjects + "</p><p>" + "<b>People: </b>" + 
-		subjectPeople + "</p>"+ "<p><b>Excerpts: </b>" + excerpts + "</p>";
+		var bookDetails = "<center><img src='" + imageURL + "' alt='" + bookTitle + "' width='300'/></center>" + "<p>" + 
+		authors + "</p><p>" + pages + "<p><p>" + subjects + "</p><p>" + 
+		subjectPeople + "</p>"+ "<p>" + excerpts + "</p>";
 	
 		$('#mediaTitle').append(bookTitle);
 		$('#mediaInfoContent').append(bookDetails);
@@ -175,37 +213,208 @@ function displayBookDetails(){
 
 /*Adds a game to the local collection array. We first have to convert the XML game data into a JSON object in order to be able to 
  * add to local storage. The list is then sorted alphabetically and the list is then built by calling another method.*/
-/*
 function addBookToCollection(){
 	
-	//this checks if the selected game already exists in the user's collection
-	for(var i = 0; i < myGames.length; i++){
-		if(myGames[i].Game.GameTitle == $(gameData).find("GameTitle").text() && myGames[i].Game.id == $(gameData).find("id").text()){
-			$('#addExistingMedia').bind({
-				popupafterclose: function(event, ui){
-					$('#addToCollection').dialog('close');
-				}
-			})
-			setTimeout( function(){ $( '#addExistingMedia' ).popup( 'open' ) }, 100 );
-			return;
-		}			
+	if(bookData[OLID]){
+		//this checks if the selected game already exists in the user's collection
+		for(var i = 0; i < myBooks.length; i++){
+			var book = myBooks[i];
+			var bookOLID = getOLIDNumber(book);
+			if(book[bookOLID].title == bookData[OLID].title){
+				$('#addExistingMedia').bind({
+					popupafterclose: function(event, ui){
+						$('#addToCollection').dialog('close');
+					}
+				})
+				setTimeout( function(){ $( '#addExistingMedia' ).popup( 'open' ) }, 100 );
+				return;
+			}			
+		}
+
+		myBooks.push(bookData);
+	
+	
+		myBooks.sort(function (a, b){
+			var aBookOLID = getOLIDNumber(a);
+			var bBookOLID = getOLIDNumber(b);
+			var titleA = a[aBookOLID].title.toLowerCase(), titleB = b[bBookOLID].title.toLowerCase();
+			if (titleA < titleB)
+				return -1;
+			if (titleA > titleB)
+				return 1;
+			return 0;
+		});
+	
+		localStorage.bookList = JSON.stringify(myBooks);
+	
+		buildBookList()
+	
+		setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'open' ) }, 100 );
+		$('#addMediaConfirm').bind({
+			popupafterclose: function(event, ui){
+				$('#addToCollection').dialog('close');
+			}
+		})
 	}
-	//Use a jQuery plugin in order to convert the XML object into JSON.
-	var jsonGameData = $.xml2json(gameData);
-	//Push the newly converted JSON object into the games array.
-	myGames.push(jsonGameData);
+	else{
+		setTimeout( function(){ $( '#addMediaFailed' ).popup( 'open' ) }, 100 );
+		$('#addMediaFailed').bind({
+			popupafterclose: function(event, ui){
+				$('#addToCollection').dialog('close');
+			}
+		})
+	}
+}
+
+function buildBookList(){	
+	$('#bookList').empty();
 	
-	myGames.sort(function (a, b){
-		var titleA = a.Game.GameTitle.toLowerCase(), titleB = b.Game.GameTitle.toLowerCase();
-		if (titleA < titleB)
-			return -1;
-		if (titleA > titleB)
-			return 1;
-		return 0;
-	});
+	for(var x in myBooks){
+		var book = myBooks[x];
+		var bID = getOLIDNumber(book);
+		var imageURL = book[bID].cover["large"];
+		var bookItem = "<li data-bookIndex = " + x + "><a href=''><img src='" + imageURL + "'/><h3>" + book[bID].title + "</h3>" + 
+		"<p>" + book[bID].authors[0].name + "</p>";
+		var elementEnd;
 		
-	localStorage.gameList = JSON.stringify(myGames);
+		$('#bookList').append(bookItem);
+	};
+
+	$('#bookList li').click(function() {
+		openBookDialog($(this).attr('data-bookIndex'));
+	});
+
+	$('#bookList').listview("refresh");
+
+	$('#bookCount').text(myBooks.length);
+}
+
+function getOLIDNumber(myBooks){
+	var objectString = JSON.stringify(myBooks);
+	var begOLIDIndex;
+	var endOLIDIndex;
 	
-	buildGameList();
-} 
-*/
+	begOLIDIndex = objectString.indexOf('OLID:');
+	endOLIDIndex = objectString.indexOf('":');
+	OLIDString = objectString.substring(begOLIDIndex, endOLIDIndex);
+	
+	return OLIDString;
+}
+
+function deleteFromBookCollection(){
+	myBooks.splice(bookIndex, 1);
+	if(myBooks.length == 0){
+		localStorage.removeItem("bookList");
+	}else{
+		localStorage.bookList = JSON.stringify(myBooks);
+	}
+	buildBookList();
+	$('#mediaOptions').dialog('close');
+}
+
+function openBookDialog(index){
+	console.log(index);
+	bookIndex = index;
+	$("#mediaOptionsDisplayInfoButtonTitle").empty();
+	$("#mediaOptionsDisplayInfoButtonTitle").append("Book Info");
+	$('#mediaOptionsDisplayInfoButton').attr('onclick', "displayCollectionBookDetails()");
+	$('#mediaOptionsDeleteButton').attr('onclick', "deleteFromBookCollection()");
+	$('#mediaOptionsLink').click();
+}
+
+function displayCollectionBookDetails(){
+	var authors = "<b>Author(s): </b>";
+	var subjects = "<b>Subjects: </b>";
+	var subjectPeople = "<b>People: </b>";
+	var excerpts = "<b>Excerpts: </b>";
+	var pages = "<b>Pages: </b>";
+	var book = myBooks[bookIndex];
+	var bOLID = getOLIDNumber(book);
+	
+	$("#mediaTitle").empty();
+	//Clear game content to account for multiple uses 
+	$("#mediaInfoContent").empty();
+	
+	if(book[bOLID].authors !== undefined){
+		if(book[bOLID].authors.length > 1){
+			for(var x in book[bOLID].authors){
+				if(y == book[bOLID].authors.length - 1){
+					authors += book[bOLID].authors[y].name + ".";
+				}
+				else{
+					authors += book[bOLID].authors[y].name + ", ";
+				}
+			}
+		}
+		else{
+			authors += book[bOLID].authors[0].name + ".";
+		}
+	}
+	else{
+		authors = "";
+	}
+	
+	if(book[bOLID].subjects !== undefined){
+		if(book[bOLID].subjects.length > 1){
+			for(var y in book[bOLID].subjects){
+				if(y == book[bOLID].subjects.length - 1){
+					subjects += book[bOLID].subjects[y].name + ".";
+				}
+				else{
+					subjects += book[bOLID].subjects[y].name + ", ";
+				}
+			}
+		}
+		else{
+			subjects += book[bOLID].subjects[0].name + ".";
+		}
+	}
+	else{
+		subjects = "";
+	}
+	
+	if(book[bOLID].subject_people !== undefined){
+		if(book[bOLID].subject_people.length > 1){
+			for(var y in book[bOLID].subject_people){
+				if(y == book[bOLID].subject_people.length - 1){
+					subjectPeople += book[bOLID].subject_people[y].name + ".";
+				}
+				else{
+					subjectPeople += book[bOLID].subject_people[y].name + ", ";
+				}
+			}
+		}	
+		else{
+			subjectPeople += book[bOLID].subject_people[0].name + ".";
+		}
+	}
+	else{
+		subjectPeople = "";
+	}
+	
+	if(book[bOLID].excerpts !== undefined){
+		if(book[bOLID].excerpts.length > 1){
+			excerpts += book[bOLID].excerpts[0].text + ".";
+		}
+	}
+	else{
+		excerpts = "";
+	}
+		
+	if(book[bOLID].number_of_pages !== undefined){
+		pages += book[bOLID].number_of_pages + ".";
+	}
+	else{
+		pages = "";
+	}
+
+	var bookTitle = book[bOLID].title;
+	var imageURL = book[bOLID].cover["large"];
+	var bookDetails = "<center><img src='" + imageURL + "' alt='" + bookTitle + "' width='300'/></center>" + "<p>" + 
+	authors + "</p><p>" + pages + "<p><p>" + subjects + "</p><p>" + 
+	subjectPeople + "</p>"+ "<p>" + excerpts + "</p>";
+	
+	$('#mediaTitle').append(bookTitle);
+	$('#mediaInfoContent').append(bookDetails);
+	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
+}

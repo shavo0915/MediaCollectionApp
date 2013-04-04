@@ -5,6 +5,10 @@ function populateCollection(){
 	
 	$.mobile.loadPage('#myShows');
 	
+	$.mobile.loadPage('#myBooks');
+	
+	$.mobile.loadPage('#myMedia');
+	
 	if (localStorage.movieList) {
 		myMovies = JSON.parse(localStorage.movieList);
 		baseAddress = localStorage.baseAddress;
@@ -20,5 +24,9 @@ function populateCollection(){
 	if(localStorage.tvList){
 		myShows = JSON.parse(localStorage.tvList);
 		buildTVList();
+	}
+	if(localStorage.bookList){
+		myBooks = JSON.parse(localStorage.bookList);
+		buildBookList();
 	}
 }
