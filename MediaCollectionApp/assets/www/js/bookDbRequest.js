@@ -125,7 +125,7 @@ function displayBookDetails(){
 			if(bookData[OLID].authors.length > 1){
 				for(var x in bookData[OLID].authors){
 					if(y == bookData[OLID].authors.length - 1){
-						authors += bookData[OLID].authors[y].name + ".";
+						authors += bookData[OLID].authors[y].name;
 					}
 					else{
 						authors += bookData[OLID].authors[y].name + ", ";
@@ -133,7 +133,7 @@ function displayBookDetails(){
 				}
 			}
 			else{
-				authors += bookData[OLID].authors[0].name + ".";
+				authors += bookData[OLID].authors[0].name;
 			}
 		}
 		else{
@@ -142,8 +142,8 @@ function displayBookDetails(){
 	
 		if(bookData[OLID].subjects !== undefined){
 			if(bookData[OLID].subjects.length > 1){
-				for(var y in bookData[OLID].subjects){
-					if(y == bookData[OLID].subjects.length - 1){
+				for(var y = 0; y < bookData[OLID].subjects.length - 1; y++){
+					if(y == bookData[OLID].subjects.length - 2){
 						subjects += bookData[OLID].subjects[y].name + ".";
 					}
 					else{
@@ -179,7 +179,7 @@ function displayBookDetails(){
 		}
 	
 		if(bookData[OLID].excerpts !== undefined){
-			if(bookData[OLID].excerpts.length > 1){
+			if(bookData[OLID].excerpts.length >= 1){
 				excerpts += bookData[OLID].excerpts[0].text + ".";
 			}
 		}
@@ -237,7 +237,16 @@ function addBookToCollection(){
 		myBooks.sort(function (a, b){
 			var aBookOLID = getOLIDNumber(a);
 			var bBookOLID = getOLIDNumber(b);
-			var titleA = a[aBookOLID].title.toLowerCase(), titleB = b[bBookOLID].title.toLowerCase();
+			var aTitle = "";
+			var bTitle = "";
+			
+			if(a[aBookOLID].title !== undefined){
+				aTitle = a[aBookOLID].title.toLowerCase();
+			}
+			if(b[bBookOLID].title !== undefined){
+				bTitle = b[bBookOLID].title.toLowerCase();
+			}
+			var titleA = aTitle, titleB = bTitle;
 			if (titleA < titleB)
 				return -1;
 			if (titleA > titleB)
@@ -272,8 +281,14 @@ function buildBookList(){
 	for(var x in myBooks){
 		var book = myBooks[x];
 		var bID = getOLIDNumber(book);
+		var bookTitle = book[bID].title;
 		var imageURL = book[bID].cover["large"];
-		var bookItem = "<li data-bookIndex = " + x + "><a href=''><img src='" + imageURL + "'/><h3>" + book[bID].title + "</h3>" + 
+		
+		if(book[bID].title === undefined){
+			bookTitle = "";
+		}
+		
+		var bookItem = "<li data-bookIndex = " + x + "><a href=''><img src='" + imageURL + "'/><h3>" + bookTitle + "</h3>" + 
 		"<p>" + book[bID].authors[0].name + "</p>";
 		var elementEnd;
 		
@@ -339,7 +354,7 @@ function displayCollectionBookDetails(){
 		if(book[bOLID].authors.length > 1){
 			for(var x in book[bOLID].authors){
 				if(y == book[bOLID].authors.length - 1){
-					authors += book[bOLID].authors[y].name + ".";
+					authors += book[bOLID].authors[y].name;
 				}
 				else{
 					authors += book[bOLID].authors[y].name + ", ";
@@ -347,7 +362,7 @@ function displayCollectionBookDetails(){
 			}
 		}
 		else{
-			authors += book[bOLID].authors[0].name + ".";
+			authors += book[bOLID].authors[0].name;
 		}
 	}
 	else{
@@ -356,8 +371,8 @@ function displayCollectionBookDetails(){
 	
 	if(book[bOLID].subjects !== undefined){
 		if(book[bOLID].subjects.length > 1){
-			for(var y in book[bOLID].subjects){
-				if(y == book[bOLID].subjects.length - 1){
+			for(var y = 0; y < book[bOLID].subjects.length - 1; y++){
+				if(y == book[bOLID].subjects.length - 2){
 					subjects += book[bOLID].subjects[y].name + ".";
 				}
 				else{
@@ -393,7 +408,7 @@ function displayCollectionBookDetails(){
 	}
 	
 	if(book[bOLID].excerpts !== undefined){
-		if(book[bOLID].excerpts.length > 1){
+		if(book[bOLID].excerpts.length >= 1){
 			excerpts += book[bOLID].excerpts[0].text + ".";
 		}
 	}
