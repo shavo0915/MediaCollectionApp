@@ -334,7 +334,7 @@ function displayCollectedMovieDetails(){
 }
 
 function movieImgMList(){
-	if(myBooks.length > 0){
+	if(myMovies.length > 0){
 		$('#mImage').remove();
 		var posterPath = myMovies[0].poster_path;
 		baseAddress = localStorage.baseAddress;
