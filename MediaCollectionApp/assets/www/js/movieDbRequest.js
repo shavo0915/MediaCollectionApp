@@ -180,6 +180,9 @@ function deleteMovie(){
 	}
 	buildMovieList();
 	$('#mediaOptions').dialog('close');
+	
+	movieImgMList();
+	$('#mainList').listview("refresh");
 }
 
 /**
@@ -265,6 +268,9 @@ function addMovie(){
 	
 	buildMovieList()
 	
+	movieImgMList();
+	$('#mainList').listview("refresh");
+	
 	setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'open' ) }, 100 );
 	$('#addMediaConfirm').bind({
 		popupafterclose: function(event, ui){
@@ -325,4 +331,19 @@ function displayCollectedMovieDetails(){
 	$('#mediaTitle').append(movieTitle);
 	$('#mediaInfoContent').append(movieDetails);
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
+}
+
+function movieImgMList(){
+	if(myBooks.length > 0){
+		$('#mImage').remove();
+		var posterPath = myMovies[0].poster_path;
+		baseAddress = localStorage.baseAddress;
+		posterSize = localStorage.posterSize;
+		var imgURL = baseAddress + posterSize + posterPath;
+		var img = $('<img id="mImage"/>').attr('src', imgURL);
+		$('#movieImage').append($(img));
+	}
+	else{
+		$('#mImage').remove();
+	}
 }

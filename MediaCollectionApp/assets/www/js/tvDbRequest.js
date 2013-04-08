@@ -125,7 +125,11 @@ function addTVShow(){
 	
 	localStorage.tvList = JSON.stringify(myShows);
 	
-	buildTVList()
+	buildTVList();
+	
+	tvShowImgMList();
+	$('#mainList').listview("refresh");
+
 	
 	setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'open' ) }, 100 );
 	$('#addMediaConfirm').bind({
@@ -234,6 +238,10 @@ function deleteTVShow(){
 		localStorage.tvList = JSON.stringify(myShows);
 	}
 	buildTVList();
+	
+	tvShowImgMList();
+	$('#mainList').listview("refresh");
+	
 	$('#mediaOptions').dialog('close');
 }
 
@@ -266,4 +274,19 @@ function displayCollectedTVShowDetails(){
 	$('#mediaTitle').append(tvShowTitle);
 	$('#mediaInfoContent').append(tvShowDetails);
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'}); 
+}
+
+function tvShowImgMList(){
+	if(myShows.length > 0){
+		$('#sImage').remove();
+		var imageURL = "http://thetvdb.com/banners/" + myShows[0].Series.poster;
+		var img = $('<img id="sImage"/>').attr('src', imageURL);
+		$('#tvShowImage').append($(img));
+	}
+	if(myShows.length > 0){
+		
+	}
+	else{
+		$('#sImage').remove();
+	}
 }

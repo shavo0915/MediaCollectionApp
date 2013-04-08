@@ -273,6 +273,11 @@ function addBookToCollection(){
 			}
 		})
 	}
+	$('#mainList').listview("refresh");
+	
+	bookImgMList();
+	
+	$('#mainList').listview("refresh");
 }
 
 function buildBookList(){	
@@ -324,7 +329,12 @@ function deleteFromBookCollection(){
 		localStorage.bookList = JSON.stringify(myBooks);
 	}
 	buildBookList();
-	$('#mediaOptions').dialog('close');
+	
+	$('#mediaOptions').dialog('close'); 
+	
+	bookImgMList();
+	
+	$('#mainList').listview("refresh");
 }
 
 function openBookDialog(index){
@@ -432,4 +442,18 @@ function displayCollectionBookDetails(){
 	$('#mediaTitle').append(bookTitle);
 	$('#mediaInfoContent').append(bookDetails);
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
+}
+
+function bookImgMList(){
+	if(myBooks.length > 0){
+		$('#bImage').remove();
+		var book = myBooks[0];
+		var bID = getOLIDNumber(book);
+		var imageURL = book[bID].cover["large"];
+		var img = $('<img id="bImage"/>').attr('src', imageURL);
+		$('#bookImage').append($(img));
+	}
+	else{
+		$('#bImage').remove();
+	}
 }

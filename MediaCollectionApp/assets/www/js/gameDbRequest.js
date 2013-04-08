@@ -3,7 +3,6 @@ var gameData;
 var myGames = [];
 var gameIndex;
 
-
 /*Initiates AJAX call. We send a query string which in this case is the game name and depending on whether we establish a 
  * connection with the database we either call the success function or print out an error to the user.
  */ 
@@ -201,6 +200,10 @@ function addGameToCollection(){
 	localStorage.gameList = JSON.stringify(myGames);
 	
 	buildGameList();
+	
+	gameImgMList();
+	
+	$('#mainList').listview("refresh");
 } 
 
 function openGameDialog(index){
@@ -223,11 +226,13 @@ function deleteFromGameCollection(){
 	}
 	buildGameList();
 	$('#mediaOptions').dialog('close');
+	
+	gameImgMList();
+	$('#mainList').listview("refresh");
 }
 
 /*Builds the game list by iterating through the array of JSON game objects. */
 function buildGameList(){
-	var mListGameURL = "";
 	$('#gameList').empty();
 	
 	for(var x in myGames){
@@ -244,20 +249,9 @@ function buildGameList(){
 		var gameItem = "<li data-myGamesIndex = " + x + "><a href=''><img src=" + thumbIMGURL + "/><h3>" + myGames[x].Game.GameTitle + "</h3>"
 		+ "<p>" + myGames[x].Game.ReleaseDate + "</p><p>" + myGames[x].Game.Platform + "</p></a></li>";
 		var elementEnd;
-		
-		/*if(x = 0){
-			mListGameURL = thumbIMGURL;
-		}*/
 
 		$('#gameList').append(gameItem);
 	};
-	
-	/*if(myGames.length > 0){
-		var imgStr = "<img src = '" + mListGameURL + "'/>";
-		$('#myGames').append(imgStr);
-		$('#mainList').listview("refresh");
-		//$('#gameImage').attr('src', mListGameURL);
-	}*/
 
 	$('#gameList li').click(function() {
 		openGameDialog($(this).attr('data-myGamesIndex'));
@@ -356,4 +350,25 @@ function displayCollectionGameDetails(){
 	$('#mediaTitle').append(gameTitle);
 	$('#mediaInfoContent').append(gameDetails);
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
+}
+
+function gameImgMList(){
+	if(myGames.length > 0){
+		$('#gImage').remove();
+		var baseIMGURL = myGames[0].baseImgUrl;
+		var stringGameData = JSON.stringify(myGames[0].Game.Images.boxart);
+		if(stringGameData.indexOf(',') == -1){
+			var posterPath = baseIMGURL + myGames[0].Game.Images.boxart;
+		}
+		else{
+			var posterPath = baseIMGURL + myGames[0].Game.Images.boxart[1];
+		}
+		var stringPosterPath = JSON.stringify(posterPath);
+		var thumbIMGURL = addThumbToURL(stringPosterPath, baseIMGURL);
+		var img = $('<img id="gImage"/>').attr('src', thumbIMGURL);
+		$('#gameImage').append($(img));
+	}
+	else{
+		$('#gImage').remove();
+	}
 }

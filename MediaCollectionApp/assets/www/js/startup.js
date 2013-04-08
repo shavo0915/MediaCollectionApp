@@ -1,4 +1,6 @@
 function populateCollection(){
+	$.mobile.loadPage('#myMedia');
+	
 	$.mobile.loadPage('#myMovies');
 	
 	$.mobile.loadPage('#myGames');
@@ -6,8 +8,6 @@ function populateCollection(){
 	$.mobile.loadPage('#myShows');
 	
 	$.mobile.loadPage('#myBooks');
-	
-	$.mobile.loadPage('#myMedia');
 	
 	if (localStorage.movieList) {
 		myMovies = JSON.parse(localStorage.movieList);
@@ -29,4 +29,12 @@ function populateCollection(){
 		myBooks = JSON.parse(localStorage.bookList);
 		buildBookList();
 	}
+	
+	gameImgMList();
+	
+	bookImgMList()
+	
+	movieImgMList();
+	
+	tvShowImgMList()
 }
