@@ -276,6 +276,8 @@ function displayCollectedTVShowDetails(){
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'}); 
 }
 
+/*This function checks if the shows list has at least one item. If it does it pulls the image from the first item in the 
+ * list and adds it to the main lists picture. If there is no item In the list no picture is shown in the main list.*/
 function tvShowImgMList(){
 	if(myShows.length > 0){
 		$('#sImage').remove();

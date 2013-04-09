@@ -1,7 +1,7 @@
-var games;
-var gameData;
-var myGames = [];
-var gameIndex;
+var games;	//Used for the retrieved books list from the query
+var gameData;	//Used to store the chosen books detailed info after the query
+var myGames = [];	//Used for a users local game collection
+var gameIndex;	//used for the chosen games index
 
 /*Initiates AJAX call. We send a query string which in this case is the game name and depending on whether we establish a 
  * connection with the database we either call the success function or print out an error to the user.
@@ -352,6 +352,9 @@ function displayCollectionGameDetails(){
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
 }
 
+
+/*This function checks if the games list has at least one item. If it does it pulls the image from the first item in the 
+ * list and adds it to the main lists picture. If there is no item In the list no picture is shown in the main list.*/
 function gameImgMList(){
 	if(myGames.length > 0){
 		$('#gImage').remove();

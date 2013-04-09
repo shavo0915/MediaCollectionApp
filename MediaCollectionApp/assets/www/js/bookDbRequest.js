@@ -1,9 +1,11 @@
-var booksList;
-var bookData;
-var myBooks = [];
-var bookIndex;
-var OLID;
+var booksList;	//Stores the list of books retrieved from the query
+var bookData;	//Stores a chosen books that after shoosing from the booksList
+var myBooks = []; //used to store a users book collection
+var bookIndex; //clicked books index
+var OLID;	//Used to store a books OLID
 
+/*this function takes the users entered string and queries the open library for a list of books that match. Depending on whether
+ * the query was succesful or not we either print out an error to the user or call getBookListInfoSucess*/
 function getBookListInfo(bookName){
 	$.ajax({
 		beforeSend: function() { $.mobile.showPageLoadingMsg(); },
@@ -19,6 +21,7 @@ function getBookListInfo(bookName){
 	});
 }
 
+/*Upon a successful query we build a list with the returned items and display it to the user*/
 function getBookListInfoSuccess(data){
 	var authors; 
 	var pYear;
@@ -35,6 +38,8 @@ function getBookListInfoSuccess(data){
 	console.log(data);
 	booksList = data;
 	
+	//checks in case there are undefined items. If so we set their corresponding variable to an empty string so they 
+	//wont be displayed to the user.
 	for(var x in data.docs){
 		
 		if(data.docs[x].author_name !== undefined){
@@ -60,7 +65,7 @@ function getBookListInfoSuccess(data){
 		$('#mediaReturn').append(listElement);
 	}
 	
-	//assigns a click listener to each list element in the listview in the mediaQueryReturn popup to hanle the selection of a movie
+	//assigns a click listener to each list element in the listview in the mediaQueryReturn popup to hanle the selection of a book
 	$('#mediaReturn li').click(function() {
 		getChosenBookInfo($(this).index());
 	});
@@ -68,6 +73,7 @@ function getBookListInfoSuccess(data){
 	$('#mediaQueryReturn').popup('open');
 }
 
+/*This method gets the book key or OLID of the chosen book and calls a query for said books detailed information.*/
 function getChosenBookInfo(index){
 
 	var bookId = booksList.docs[index].cover_edition_key;
@@ -82,12 +88,14 @@ function getChosenBookInfo(index){
 	
 	$('#mediaQueryReturn').popup('close');
 	
-	//Calls the query to get more detailed information on the chosen game so it can be either stored immediatley or viewed. 
+	//Calls the query to get more detailed information on the chosen book so it can be either stored immediatley or viewed. 
 	queryBookInfo(bookId);
 	
 	OLID = "OLID:" + bookId;
 }
 
+/*Query to get the chosen books detailed information. On error we print out an appropriate message. If the query is successful we call 
+ * getBookInfoSucess.*/
 function queryBookInfo(bookId){
 	$.ajax({
 		beforeSend: function() { $.mobile.showPageLoadingMsg(); },
@@ -103,12 +111,15 @@ function queryBookInfo(bookId){
 	});
 }
 
+/*On a successful we store the returned data into an object to be able to access it later and overwrite 
+ * the methods on the add media dialog box.*/
 function getBookInfoSuccess(data){ 
 	bookData = data;
 	$('#addMediaButton').attr('onclick', "addBookToCollection()");
 	$('#displayInfoButton').attr('onclick', "displayBookDetails()");
 }
 
+/*This method is used to display a books detailed information. If there is none we display an appropriate message to the user.*/
 function displayBookDetails(){
 	var authors = "<b>Author(s): </b>";
 	var subjects = "<b>Subjects: </b>";
@@ -120,7 +131,11 @@ function displayBookDetails(){
 	//Clear game content to account for multiple uses 
 	$("#mediaInfoContent").empty();
 	
+	//Check to see if the detailed info object exists
 	if(bookData[OLID]){
+		
+		//Checks if the information in the detailed info object isn't empty. If it is we don't even display 
+		//the info. 
 		if(bookData[OLID].authors !== undefined){
 			if(bookData[OLID].authors.length > 1){
 				for(var x in bookData[OLID].authors){
@@ -211,10 +226,10 @@ function displayBookDetails(){
 	}
 }
 
-/*Adds a game to the local collection array. We first have to convert the XML game data into a JSON object in order to be able to 
- * add to local storage. The list is then sorted alphabetically and the list is then built by calling another method.*/
+/*Adds a book to the local collection array. The list is then sorted alphabetically and the list is then built by calling another method.*/
 function addBookToCollection(){
 	
+	//Check to make sure that the detailed info object exists
 	if(bookData[OLID]){
 		//this checks if the selected game already exists in the user's collection
 		for(var i = 0; i < myBooks.length; i++){
@@ -230,10 +245,11 @@ function addBookToCollection(){
 				return;
 			}			
 		}
-
+		
+		//Add detailed book data into the books array
 		myBooks.push(bookData);
 	
-	
+		//Sort the books in the books array by name
 		myBooks.sort(function (a, b){
 			var aBookOLID = getOLIDNumber(a);
 			var bBookOLID = getOLIDNumber(b);
@@ -254,8 +270,10 @@ function addBookToCollection(){
 			return 0;
 		});
 	
+		//Turn the books array into a string and add it to local storage
 		localStorage.bookList = JSON.stringify(myBooks);
 	
+		//builds the books list
 		buildBookList()
 	
 		setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'open' ) }, 100 );
@@ -266,6 +284,7 @@ function addBookToCollection(){
 		})
 	}
 	else{
+		//Outputs a message telling the user that no detailed information for the book was found.
 		setTimeout( function(){ $( '#addMediaFailed' ).popup( 'open' ) }, 100 );
 		$('#addMediaFailed').bind({
 			popupafterclose: function(event, ui){
@@ -275,11 +294,13 @@ function addBookToCollection(){
 	}
 	$('#mainList').listview("refresh");
 	
+	//method call to update the main list
 	bookImgMList();
 	
 	$('#mainList').listview("refresh");
 }
 
+/*Builds the book list and displays the image, book title and the books author if applicable.*/
 function buildBookList(){	
 	$('#bookList').empty();
 	
@@ -309,6 +330,8 @@ function buildBookList(){
 	$('#bookCount').text(myBooks.length);
 }
 
+/*Since the JSON objects main key is dynamic, this method turns said object into a string in order to be able to parse out
+the objects key in order to be able to access its contents and returns it.*/
 function getOLIDNumber(myBooks){
 	var objectString = JSON.stringify(myBooks);
 	var begOLIDIndex;
@@ -321,6 +344,7 @@ function getOLIDNumber(myBooks){
 	return OLIDString;
 }
 
+/*Deletes a book from local storage*/
 function deleteFromBookCollection(){
 	myBooks.splice(bookIndex, 1);
 	if(myBooks.length == 0){
@@ -347,6 +371,7 @@ function openBookDialog(index){
 	$('#mediaOptionsLink').click();
 }
 
+/*Displays the collected books detailed information stored in a users collection.*/
 function displayCollectionBookDetails(){
 	var authors = "<b>Author(s): </b>";
 	var subjects = "<b>Subjects: </b>";
@@ -444,6 +469,8 @@ function displayCollectionBookDetails(){
 	$.mobile.changePage('#mediaInfo', {transition: 'pop', role: 'dialog'});
 }
 
+/*This function checks if the books list has at least one item. If it does it pulls the image from the first item in the 
+ * list and adds it to the main lists picture. If there is no item In the list no picture is shown in the main list.*/
 function bookImgMList(){
 	if(myBooks.length > 0){
 		$('#bImage').remove();
