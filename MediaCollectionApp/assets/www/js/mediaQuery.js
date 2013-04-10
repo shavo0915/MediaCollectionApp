@@ -7,9 +7,9 @@ function queryMedia(){
 		getGameListInfo(queryString);
 		//alert(queryString);
 	}
-	else if(chosenMedia =="music"){
+	/*else if(chosenMedia =="music"){
 		alert("You have chosen Music");
-	}
+	}*/
 	else if(chosenMedia == "shows"){
 		getTVShowInfo(queryString);
 	}
