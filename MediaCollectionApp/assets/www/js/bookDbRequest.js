@@ -132,20 +132,21 @@ function displayBookDetails(){
 	$("#mediaInfoContent").empty();
 	
 	//Check to see if the detailed info object exists
+	alert(JSON.stringify(bookData[OLID].subjects));
 	if(bookData[OLID]){
 		
 		//Checks if the information in the detailed info object isn't empty. If it is we don't even display 
 		//the info. 
 		if(bookData[OLID].authors !== undefined){
 			if(bookData[OLID].authors.length > 1){
-				for(var x in bookData[OLID].authors){
+				for(var y in bookData[OLID].authors){
 					if(y == bookData[OLID].authors.length - 1){
-						authors += bookData[OLID].authors[y].name;
+							authors += bookData[OLID].authors[y].name;
 					}
 					else{
 						authors += bookData[OLID].authors[y].name + ", ";
 					}
-				}
+				}				
 			}
 			else{
 				authors += bookData[OLID].authors[0].name;
