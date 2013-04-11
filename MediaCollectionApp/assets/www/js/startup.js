@@ -1,5 +1,4 @@
 function populateCollection(){
-	$.mobile.loadPage('#myMedia');
 	
 	$.mobile.loadPage('#myMovies');
 	
