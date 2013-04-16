@@ -1,12 +1,22 @@
 function populateCollection(){
 	
-	$.mobile.loadPage('#myMovies');
+	$.mobile.loadPage('#myBooks');
 	
 	$.mobile.loadPage('#myGames');
 	
+	$.mobile.loadPage('#myMovies');
+	
 	$.mobile.loadPage('#myShows');
 	
-	$.mobile.loadPage('#myBooks');
+	if(localStorage.bookList){
+		myBooks = JSON.parse(localStorage.bookList);
+		buildBookList();
+	}
+	
+	if (localStorage.gameList) {
+		myGames = JSON.parse(localStorage.gameList);
+		buildGameList();
+	}
 	
 	if (localStorage.movieList) {
 		myMovies = JSON.parse(localStorage.movieList);
@@ -15,25 +25,16 @@ function populateCollection(){
 		buildMovieList();
 	}
 	
-	if (localStorage.gameList) {
-		myGames = JSON.parse(localStorage.gameList);
-		buildGameList();
-	}
-	
 	if(localStorage.tvList){
 		myShows = JSON.parse(localStorage.tvList);
 		buildTVList();
 	}
-	if(localStorage.bookList){
-		myBooks = JSON.parse(localStorage.bookList);
-		buildBookList();
-	}
 	
-	gameImgMList();
+	bookImgMList();
 	
-	bookImgMList()
+	gameImgMList();	
 	
 	movieImgMList();
 	
-	tvShowImgMList()
+	tvShowImgMList();
 }
