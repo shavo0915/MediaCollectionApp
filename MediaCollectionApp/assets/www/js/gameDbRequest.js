@@ -246,7 +246,7 @@ function buildGameList(){
 		}
 		var stringPosterPath = JSON.stringify(posterPath);
 		var thumbIMGURL = addThumbToURL(stringPosterPath, baseIMGURL);
-		var gameItem = "<li data-myGamesIndex = " + x + "><a href=''><img src=" + thumbIMGURL + "/><h3>" + myGames[x].Game.GameTitle + "</h3>"
+		var gameItem = "<li data-myGamesIndex = " + x + "><a href=''><img src=" + thumbIMGURL + "><h3>" + myGames[x].Game.GameTitle + "</h3>"
 		+ "<p>" + myGames[x].Game.ReleaseDate + "</p><p>" + myGames[x].Game.Platform + "</p></a></li>";
 		var elementEnd;
 
