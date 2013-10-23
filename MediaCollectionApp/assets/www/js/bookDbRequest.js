@@ -314,7 +314,7 @@ function buildBookList(){
 			bookTitle = "";
 		}
 		
-		var bookItem = "<li data-bookIndex = " + x + "><a href=''><img src='" + imageURL + "'/><h3>" + bookTitle + "</h3>" + 
+		var bookItem = "<li data-bookIndex = " + x + "><a href=''><img src='" + imageURL + "'><h3>" + bookTitle + "</h3>" + 
 		"<p>" + book[bID].authors[0].name + "</p>";
 		var elementEnd;
 		
