@@ -8,6 +8,8 @@ function populateCollection(){
 	
 	$.mobile.loadPage('#myShows');
 	
+	$.mobile.loadPage('#addMedia');
+	
 	if(localStorage.bookList){
 		myBooks = JSON.parse(localStorage.bookList);
 		buildBookList();
