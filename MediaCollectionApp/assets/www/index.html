@@ -14,6 +14,7 @@
 	<script src="js/bookDbRequest.js"></script>
 	<script src="js/startup.js"></script>
 	<script src="js/addMediaLink.js"></script>
+	<script src="js/deleteMyMedia.js"></script>
 </head> 
 <body> 
 
@@ -184,6 +185,7 @@
 	<div data-role="page" id="settings" data-add-back-btn="true">
 		
 		<div data-role="header">
+			<a data-role="button" href="#deleteMyMedia" class="ui-btn-right" data-rel="dialog">Delete Media</a>
 			<h1>Settings</h1>
 		</div>
 		
@@ -203,6 +205,7 @@
 			
 			<input type="submit" value="Submit"/>
 			<a href="#createAccount" data-role="button">Create Account</a>
+			
 		</div><!-- /content-->
 		
 	</div><!-- /page-->
@@ -277,6 +280,23 @@
 		<div data-role="content" id="mediaInfoContent">
 			
 		</div>	
+	</div>
+	
+	<div data-role="page" id="deleteMyMedia">
+		<div data-role="header">
+			<h1>Delete My Media</h1> 
+		</div>
+		
+		<div data-role="content">
+
+			<p>Do you really want to delete all of your local media?</p>
+			<a data-role="button" onclick="deleteMyMedia()" data-icon="delete">Yes</a>
+			<a data-role="button" onclick="dontDeleteMyMedia()" data-icon="arrow-l">No</a>
+			
+			<div data-role="popup" id="deleteMediaConfirm" data-overlay-theme="a" >
+				<h3>All Media Successfully Deleted!!</h3>
+			</div>
+		</div>
 	</div>
 	
 </body>
