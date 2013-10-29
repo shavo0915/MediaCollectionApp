@@ -235,11 +235,13 @@ function openTVShowDialog(index){
 
 function deleteTVShow(){
 	myShows.splice(tvIndex, 1);
+	alert(myShows.length);
 	if(myShows.length == 0){
-		localStorage.removeItem("tvShowList");
+		localStorage.removeItem("tvList");
 	}else{
 		localStorage.tvList = JSON.stringify(myShows);
 	}
+	alert(myShows.length);
 	buildTVList();
 	
 	tvShowImgMList();
