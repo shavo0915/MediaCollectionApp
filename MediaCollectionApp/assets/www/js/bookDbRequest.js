@@ -33,6 +33,7 @@ function getBookListInfoSuccess(data){
 		$('#mediaReturn').append(listElement);
 		$('#mediaReturn').listview( "refresh" );
 		$('#mediaQueryReturn').popup('open');
+		setTimeout( function(){ $( '#mediaQueryReturn' ).popup( 'close' ) }, 1500 );
 		return;
 	}
 	console.log(data);
@@ -242,6 +243,7 @@ function addBookToCollection(){
 					}
 				})
 				setTimeout( function(){ $( '#addExistingMedia' ).popup( 'open' ) }, 100 );
+				setTimeout( function(){ $( '#addExistingMedia' ).popup( 'close' ) }, 1500 );
 				return;
 			}			
 		}
@@ -282,6 +284,7 @@ function addBookToCollection(){
 				$('#addToCollection').dialog('close');
 			}
 		})
+		setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'close' ) }, 1500 );
 	}
 	else{
 		//Outputs a message telling the user that no detailed information for the book was found.
@@ -291,7 +294,9 @@ function addBookToCollection(){
 				$('#addToCollection').dialog('close');
 			}
 		})
+		setTimeout( function(){ $( '#addMediaFailed' ).popup( 'close' ) }, 1500 );
 	}
+	
 	$('#mainList').listview("refresh");
 	
 	//method call to update the main list

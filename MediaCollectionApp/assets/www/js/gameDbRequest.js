@@ -35,6 +35,7 @@ function getGameListInfoSuccess(data){
 		$('#mediaReturn').append(listElement);
 		$('#mediaReturn').listview( "refresh" );
 		$('#mediaQueryReturn').popup('open');
+		setTimeout( function(){ $( '#mediaQueryReturn' ).popup( 'close' ) }, 1500 );
 		return;
 	}
 	
@@ -180,6 +181,7 @@ function addGameToCollection(){
 				}
 			})
 			setTimeout( function(){ $( '#addExistingMedia' ).popup( 'open' ) }, 100 );
+			setTimeout( function(){ $( '#addExistingMedia' ).popup( 'close' ) }, 1500 );
 			return;
 		}			
 	}
@@ -267,6 +269,7 @@ function buildGameList(){
 			$('#addToCollection').dialog('close');
 		}
 	})
+	setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'close' ) }, 1500 );
 }
 
 /*Since there was a conversion from an XML game object to a JSON one there was unfortunately some data loss.

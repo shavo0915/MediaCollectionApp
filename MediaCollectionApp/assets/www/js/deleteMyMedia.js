@@ -20,19 +20,18 @@ function deleteMyMedia(){
 	
 	tvShowImgMList();
 	
-	/*setTimeout( function(){ $( '#deleteMediaConfirm' ).popup( 'open' ) }, 100 );
+	$('#deleteMediaConfirm').popup('open');
 	$('#deleteMediaConfirm').bind({
 		popupafterclose: function(event, ui){
 			$('#deleteMyMedia').dialog('close'); 			
 		}
 	})
-	*/
 	
-	//$('deleteMediaConfirm').popup('open');
+	setTimeout( function(){ $( '#deleteMediaConfirm' ).popup( 'close' ) }, 1500 );
 	
-	$('#deleteMyMedia').dialog('close'); 
+	//$('#deleteMyMedia').dialog('close'); 
 	
-	setTimeout( function(){ $( '#deleteMediaConfirm' ).popup( 'open' ) }, 1000 );
+	//setTimeout( function(){ $( '#deleteMediaConfirm' ).popup( 'open' ) }, 100 );
 	
 	$('#mainList').listview("refresh");
 }

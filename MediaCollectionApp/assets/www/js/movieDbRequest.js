@@ -59,6 +59,7 @@ function getMovieInfoSuccess(data){
 		$('#mediaReturn').append(listElement);
 		$('#mediaReturn').listview( "refresh" );
 		$('#mediaQueryReturn').popup('open');
+		setTimeout( function(){ $( '#mediaQueryReturn' ).popup( 'close' ) }, 1500 );
 		return;
 	}
 //	console.log(data);
@@ -159,6 +160,7 @@ function errorAlert(status){
     $('#mediaReturn').append(listElement);
     $('#mediaReturn').listview( "refresh" );
     $('#mediaQueryReturn').popup('open');
+    setTimeout( function(){ $( '#mediaQueryReturn' ).popup( 'close' ) }, 1500 );
 }
 
 function openMovieDialog(index){
@@ -249,6 +251,7 @@ function addMovie(){
 				}
 			})
 			setTimeout( function(){ $( '#addExistingMedia' ).popup( 'open' ) }, 100 );
+			setTimeout( function(){ $( '#addExistingMedia' ).popup( 'close' ) }, 1500 );
 			return;
 		}			
 	}
@@ -277,6 +280,7 @@ function addMovie(){
 			$('#addToCollection').dialog('close');
 		}
 	})
+	setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'close' ) }, 1500 );
 }
 
 function displayMovieDetails(){

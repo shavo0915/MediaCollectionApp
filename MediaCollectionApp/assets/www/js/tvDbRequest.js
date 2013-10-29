@@ -31,6 +31,7 @@ function getTVShowInfoSuccess(data){
 		$('#mediaReturn').append(listElement);
 		$('#mediaReturn').listview( "refresh" );
 		$('#mediaQueryReturn').popup('open');
+		setTimeout( function(){ $( '#mediaQueryReturn' ).popup( 'close' ) }, 1500 );
 		return;
 	}
 	
@@ -108,6 +109,7 @@ function addTVShow(){
 				}
 			})
 			setTimeout( function(){ $( '#addExistingMedia' ).popup( 'open' ) }, 100 );
+			setTimeout( function(){ $( '#addExistingMedia' ).popup( 'close' ) }, 1500 );
 			return;
 		}			
 	}
@@ -137,6 +139,7 @@ function addTVShow(){
 			$('#addToCollection').dialog('close');
 		}
 	})
+	setTimeout( function(){ $( '#addMediaConfirm' ).popup( 'close' ) }, 1500 );
 }
 
 function displayTVShowDetails(){
